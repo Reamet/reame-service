@@ -31,6 +31,11 @@ func (ph *ProjectHandler) ProjectCreate(c *fiber.Ctx) error {
 
 	for _,project := range bodyPayload.ProjectList {
 
+		projectResult := model.BscProject{}
+
+		result := ph.DB.Debug().Where("ID = ?", project.ID).First(&projectResult)
+
+
 		databasePayload := model.BscProject {
 			ID: project.ID,
 			Contract: project.Contract,
@@ -72,11 +77,18 @@ func (ph *ProjectHandler) ProjectCreate(c *fiber.Ctx) error {
 			TokenAddress: project.TokenAddress,
 		}
 
-		err := ph.DB.Debug().Create(&databasePayload).Error
-
-		if err != nil {
-			return err
+		if result.RowsAffected == 0 {
+			err := ph.DB.Debug().Create(&databasePayload).Error
+			if err != nil {
+				return err
+			}
+		} else {
+			err := ph.DB.Debug().Where("ID = ?", project.ID).Save(&databasePayload).Error
+			if err != nil {
+				return err
+			}
 		}
+
 	}
 
 	return c.JSON(fiber.Map{
