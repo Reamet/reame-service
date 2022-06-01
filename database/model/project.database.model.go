@@ -23,24 +23,24 @@ type BscProject struct {
 	Telegram												string			`json:"telegram"`
 	ProjectTokenAddress							string			`json:"project_token_address"`
 	Logo														string			`json:"logo"`
-	Medium													string			`json:"medium"`
+	Medium													*string			`json:"medium"`
 	Name														string			`json:"name"`
 	ProjectTokenSymbol							string			`json:"project_token_symbol"`
 	TotalSupply											string			`json:"total_supply"`
 	Twitter													string			`json:"twitter"`
 	Website													string			`json:"website"`
 	YourAllocationVisible						bool				`json:"your_allocation_visible"`
-	Detail													string			`json:"detail"`
-	ProjectTokenContract						string			`json:"project_token_contract"`
-	AthMultiplier										uint				`json:"ath_multiplier"`
+	Detail													*string			`json:"detail"`
+	ProjectTokenContract						*string			`json:"project_token_contract"`
+	AthMultiplier										*uint				`json:"ath_multiplier"`
 	Symbol													string			`json:"symbol"`
 	Disabled												bool				`json:"disabled"`
 	Pancakeswap											string			`json:"pancakeswap"`
-	Start									    	    time.Time		`json:"start"`
-	End 										        time.Time		`json:"end"`
+	Start									    	    *time.Time		`json:"start"`
+	End 										        *time.Time		`json:"end"`
 	Staking													string			`json:"staking"`
 	Allocation											string			`json:"allocation"`
 	Fcfs														string			`json:"fcfs"`
-	AllDay													bool				`json:"all_day"`
+	AllDay													*bool				`json:"all_day"`
 	TokenAddress										string			`json:"token_address"`
 }
