@@ -12,6 +12,10 @@ DB_PASSWORD=
 DB_SCHEMA_NAME=
 ```
 
+# Before Running Project
+
+- Please create database that have the same DB_SCHEMA_NAME before running below
+
 # To run project
 
 ### Step 1
