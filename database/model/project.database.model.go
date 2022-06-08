@@ -5,7 +5,8 @@ import (
 )
 
 type BscProject struct {
-	ID                							float64			`json:"id"`
+	ID                							uint				`json:"id" gorm:"primaryKey;autoIncrement"`
+	ReferredId											float64			`json:"referred_id"`
 	Contract                				string			`json:"contract"`
 	ContractVersion									uint				`json:"contract_version"`
 	OpenTime												uint				`json:"open_time"`

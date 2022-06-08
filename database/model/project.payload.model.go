@@ -5,7 +5,7 @@ import (
 )
 
 type BscProjectPayload struct {
-	ID                							float64			`json:"id"`
+	ReferredId											float64			`json:"id"`
 	Contract                				string			`json:"contract"`
 	ContractVersion									uint				`json:"contract_version"`
 	OpenTime												uint				`json:"openTime"`
