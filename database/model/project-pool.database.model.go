@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"time"
+
+	"github.com/lib/pq"
+)
 
 type ProjectPool struct {
 	Title								string					`json:"title"`
@@ -9,5 +13,5 @@ type ProjectPool struct {
 	Source							string					`json:"source"`
 	StartDate						time.Time				`json:"start_date"`
 	EndDate							time.Time				`json:"end_date"`
-	ProjectList					[]uint					`json:"project_list"`
+	ProjectList					pq.Int64Array		`gorm:"type:integer[]" json:"project_list"`
 }

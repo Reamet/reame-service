@@ -23,7 +23,7 @@ type ProjectPoolCreatePayload struct {
 	Source							string					`json:"source"`
 	StartDate						time.Time				`json:"startDate"`
 	EndDate							time.Time				`json:"endDate"`
-	ProjectList					[]uint					`json:"projectList"`
+	ProjectList					[]int64					`json:"projectList"`
 }
 
 
