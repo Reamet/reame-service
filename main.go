@@ -4,6 +4,7 @@ import (
 	"bsc-scan-data-service/database"
 	"bsc-scan-data-service/router"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -28,6 +29,8 @@ func main () {
 	}))
 
 	router.SetRouter(app)
-	log.Fatal(app.Listen(":8082"))
+	
+	PORT := os.Getenv("PORT")
+	log.Fatal(app.Listen(":" + PORT))
 
 }
