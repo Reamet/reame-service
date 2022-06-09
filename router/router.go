@@ -20,7 +20,7 @@ func SetRouter(app *fiber.App) {
 	api := version.Group("/", logger.New())
 
 	api.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"message": fmt.Sprintf("Hello! This is Notification RESTful API. 👏 %s", VERSION)})
+		return c.JSON(fiber.Map{"message": fmt.Sprintf("Hello! This is Seedtopia RESTful API. 👏 %s", VERSION)})
 	})
 
 	bscProjectGroup := api.Group("/")
