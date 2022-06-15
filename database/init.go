@@ -62,4 +62,5 @@ func (dh *DatabaseHandler) InitialPostgresql() {
 func (dh *DatabaseHandler) InitialMigration() {
 	dh.DB.AutoMigrate(&model.BscProject{})
 	dh.DB.AutoMigrate(&model.ProjectPool{})
+	dh.DB.AutoMigrate(&model.ProjectTier{})
 }
