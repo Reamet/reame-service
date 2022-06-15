@@ -12,25 +12,25 @@ import (
 )
 
 type ProjectPoolUpdatePayload struct {
-	ID                        int           `json:"id"`
-	Title                     string        `json:"title"`
-	SubTitle                  string        `json:"subTitle"`
-	Description               string        `json:"description"`
-	Source                    string        `json:"source"`
-	StartDate                 time.Time     `json:"startDate"`
-	EndDate                   time.Time     `json:"endDate"`
-	ProjectList               pq.Int64Array `json:"projectList"`
-	Term                      string        `json:"term"`
-	InvestmentPeriod          int           `json:"investmentPeriod"`
-	WithdrawalDate            time.Time     `json:"withdrawalDate"`
-	GoalRaised                int           `json:"goalRaised"`
-	GoalAllocation            int           `json:"goalAllocation"`
-	BasicInvestmentSuggestion int           `json:"basicInvestmentSuggestion"`
-	DepositFee                int           `json:"depositFee"`
-	Ido                       int           `json:"ido"`
-	Stake                     int           `json:"stake"`
-	Status                    string        `json:"status"`
-	TierList									[]ProjectPoolTier	`json:"tierList"`
+	ID                        int               `json:"id"`
+	Title                     string            `json:"title"`
+	SubTitle                  string            `json:"subTitle"`
+	Description               string            `json:"description"`
+	Source                    string            `json:"source"`
+	StartDate                 time.Time         `json:"startDate"`
+	EndDate                   time.Time         `json:"endDate"`
+	ProjectList               pq.Int64Array     `json:"projectList"`
+	Term                      string            `json:"term"`
+	InvestmentPeriod          int               `json:"investmentPeriod"`
+	WithdrawalDate            time.Time         `json:"withdrawalDate"`
+	GoalRaised                int               `json:"goalRaised"`
+	GoalAllocation            int               `json:"goalAllocation"`
+	BasicInvestmentSuggestion int               `json:"basicInvestmentSuggestion"`
+	DepositFee                int               `json:"depositFee"`
+	Ido                       int               `json:"ido"`
+	Stake                     int               `json:"stake"`
+	Status                    string            `json:"status"`
+	TierList                  []ProjectPoolTier `json:"tierList"`
 }
 
 func ProjectPoolUpdate(c *fiber.Ctx, db *gorm.DB) error {
@@ -67,16 +67,22 @@ func ProjectPoolUpdate(c *fiber.Ctx, db *gorm.DB) error {
 
 	poolResult := db.Debug().Where("ID = ?", bodyPayload.ID).First(&pool).Updates(&databasePayload)
 
-	for _, tierPayload := range bodyPayload.TierList {
+	db.Debug().Model(&model.ProjectTier{}).Where("pool_id = ?", bodyPayload.ID).Updates(map[string]interface{}{
+		"deleted_at": currentTime,
+	})
 
-		tier := model.ProjectTier{}
-
-		databaseTierPayload := map[string]interface{}{
-			"tier":	tierPayload.Tier,
-			"token_amount": tierPayload.TokenAmount,
+	for _, tier := range bodyPayload.TierList {
+		tierDatabasePayload := model.ProjectTier{
+			PoolId:      bodyPayload.ID,
+			Tier:        tier.Tier,
+			TokenAmount: tier.TokenAmount,
 		}
 
-		db.Debug().Where("pool_id = ?", bodyPayload.ID).Where("tier = ?", tierPayload.Tier).First(&tier).Updates(&databaseTierPayload)
+		tierErr := db.Debug().Create(&tierDatabasePayload).Error
+
+		if tierErr != nil {
+			return tierErr
+		}
 	}
 
 	return c.JSON(fiber.Map{

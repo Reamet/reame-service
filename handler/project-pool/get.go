@@ -17,7 +17,7 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 
 	projectPools := []model.ProjectPool{}
 
-	poolsResult := db.Debug().Preload("TierList").Limit(10).Order("created_at desc").Offset(offset).Find(&projectPools)
+	poolsResult := db.Debug().Preload("TierList", "delete_at IS NULL").Limit(10).Order("created_at desc").Offset(offset).Find(&projectPools)
 
 	var count int64
 
