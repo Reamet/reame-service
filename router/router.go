@@ -12,7 +12,7 @@ import (
 const VERSION = "v1"
 
 type socketMessage struct {
-	Title   string `json:"title"`
+	Title string `json:"title"`
 }
 
 func SetRouter(app *fiber.App) {
