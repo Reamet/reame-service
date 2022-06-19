@@ -27,6 +27,7 @@ func SetRouter(app *fiber.App) {
 	bscProjectGroupHandler := handler.ProjectHandler{}
 	bscProjectGroupHandler.Init(database.Database.DB)
 	bscProjectGroup.Post("/create-and-update-projects", bscProjectGroupHandler.ProjectCreate)
+	bscProjectGroup.Get("/project/list-project", bscProjectGroupHandler.ProjectLists)
 
 	poolProjectGroup := api.Group("/pool")
 	poolProjectGroupHandler := handler.ProjectPoolHandler{}
