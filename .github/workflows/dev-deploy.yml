@@ -21,12 +21,14 @@ jobs:
           DB_USERNAME: ${{ secrets.DEV_DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
           DB_SCHEMA_NAME: ${{ secrets.DEV_DB_SCHEMA_NAME }}
+          PORT: ${{ secrets.DEV_PORT }}
         run: |
           echo "DB_HOST=$DB_HOST
           DB_PORT=$DB_PORT
           DB_USERNAME=$DB_USERNAME
           DB_PASSWORD=$DB_PASSWORD
-          DB_SCHEMA_NAME=$DB_SCHEMA_NAME" > .env
+          DB_SCHEMA_NAME=$DB_SCHEMA_NAME
+          PORT=$PORT" > .env
 
       - name: Build Docker image
         env:
