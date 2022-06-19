@@ -136,8 +136,8 @@ func (ph *ProjectHandler) ProjectCreate(c *fiber.Ctx) error {
 }
 
 func (ph *ProjectHandler) ProjectLists(c *fiber.Ctx) error {
-
 	offset, err := strconv.Atoi(c.Query("offset"))
+	limit, err := strconv.Atoi(c.Query("limit"))
 	status := c.Query("status")
 
 	if err != nil {
@@ -148,7 +148,7 @@ func (ph *ProjectHandler) ProjectLists(c *fiber.Ctx) error {
 	var count int64
 
 	if status != "" {
-		projectResult := ph.DB.Debug().Where("status = ?", status).Limit(10).Offset(offset).Find(&project)
+		projectResult := ph.DB.Debug().Where("status = ?", status).Limit(limit).Offset(offset).Find(&project)
 
 		projectResult.Debug().Offset(-1).Count(&count)
 
@@ -159,7 +159,7 @@ func (ph *ProjectHandler) ProjectLists(c *fiber.Ctx) error {
 		})
 	}
 
-	projectResult := ph.DB.Debug().Limit(10).Offset(offset).Find(&project)
+	projectResult := ph.DB.Debug().Limit(limit).Offset(offset).Find(&project)
 
 	projectResult.Debug().Offset(-1).Count(&count)
 

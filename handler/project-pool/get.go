@@ -10,6 +10,7 @@ import (
 
 func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 	offset, err := strconv.Atoi(c.Query("offset"))
+	limit, err := strconv.Atoi(c.Query("limit"))
 	status := c.Query("status")
 
 	if err != nil {
@@ -20,7 +21,7 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 	var count int64
 
 	if status != "" {
-		poolsResult := db.Debug().Where("status = ?", status).Preload("TierList", "deleted_at IS NULL").Limit(10).Order("created_at desc").Offset(offset).Find(&projectPools)
+		poolsResult := db.Debug().Where("status = ?", status).Preload("TierList", "deleted_at IS NULL").Limit(limit).Order("created_at desc").Offset(offset).Find(&projectPools)
 
 		poolsResult.Debug().Offset(-1).Count(&count)
 
@@ -31,7 +32,7 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 		})
 	}
 
-	poolsResult := db.Debug().Preload("TierList", "deleted_at IS NULL").Limit(10).Order("created_at desc").Offset(offset).Find(&projectPools)
+	poolsResult := db.Debug().Preload("TierList", "deleted_at IS NULL").Limit(limit).Order("created_at desc").Offset(offset).Find(&projectPools)
 
 	poolsResult.Debug().Offset(-1).Count(&count)
 
