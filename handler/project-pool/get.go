@@ -49,11 +49,11 @@ func ProjectPoolById(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
-	projectPools := []model.ProjectPool{}
+	projectPools := model.ProjectPool{}
 
-	db.Debug().Where("id = ?", id).Preload("TierList", "deleted_at IS NULL").Order("created_at desc").Find(&projectPools)
+	db.Debug().Where("id = ?", id).Preload("TierList", "deleted_at IS NULL").First(&projectPools)
 
-	return c.JSON(fiber.Map{
+	return c.JSON(map[string]interface{}{
 		"status": "ok",
 		"result": projectPools,
 	})

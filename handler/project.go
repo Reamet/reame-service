@@ -177,11 +177,11 @@ func (ph *ProjectHandler) ProjectById(c *fiber.Ctx) error {
 		return err
 	}
 
-	project := []model.BscProject{}
+	project := model.BscProject{}
 
-	ph.DB.Debug().Where("id = ?", id).Find(&project)
+	ph.DB.Debug().Where("id = ?", id).First(&project)
 
-	return c.JSON(fiber.Map{
+	return c.JSON(map[string]interface{}{
 		"status": "ok",
 		"result": project,
 	})
