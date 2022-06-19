@@ -169,3 +169,20 @@ func (ph *ProjectHandler) ProjectLists(c *fiber.Ctx) error {
 		"amount":        count,
 	})
 }
+
+func (ph *ProjectHandler) ProjectById(c *fiber.Ctx) error {
+	id, err := strconv.Atoi(c.Params("id"))
+
+	if err != nil {
+		return err
+	}
+
+	project := []model.BscProject{}
+
+	ph.DB.Debug().Where("id = ?", id).Find(&project)
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+		"result": project,
+	})
+}
