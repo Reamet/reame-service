@@ -6,8 +6,6 @@ services:
       context: .
       args:
         - PORT=${PORT:-9081}
-    container_name: "${TAG:-dev}_api"
+    image: seedtopia-admin-api:${TAG:-dev}
     restart: always
     network_mode: host
-    # ports:
-      # - "${HOST:-127.0.0.1}:${PORT:-9081}:8082"
