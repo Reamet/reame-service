@@ -34,4 +34,7 @@ func SetRouter(app *fiber.App) {
 	poolProjectGroup.Post("/create-pool", poolProjectGroupHandler.ProjectPoolCreate)
 	poolProjectGroup.Get("/list-pools", poolProjectGroupHandler.ProjectPoolList)
 	poolProjectGroup.Post("/update-pool", poolProjectGroupHandler.ProjectPoolUpdate)
+	poolProjectGroup.Get("/update-pool", poolProjectGroupHandler.ProjectPoolUpdate)
+	poolProjectGroup.Get("/:id", poolProjectGroupHandler.ProjectPoolById)
+
 }

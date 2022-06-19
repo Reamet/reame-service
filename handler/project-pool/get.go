@@ -41,3 +41,20 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 		"amount":            count,
 	})
 }
+
+func ProjectPoolById(c *fiber.Ctx, db *gorm.DB) error {
+	id, err := strconv.Atoi(c.Params("id"))
+
+	if err != nil {
+		return err
+	}
+
+	projectPools := []model.ProjectPool{}
+
+	db.Debug().Where("id = ?", id).Preload("TierList", "deleted_at IS NULL").Order("created_at desc").Find(&projectPools)
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+		"result": projectPools,
+	})
+}

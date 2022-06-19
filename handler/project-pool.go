@@ -26,3 +26,7 @@ func (pph *ProjectPoolHandler) ProjectPoolList(c *fiber.Ctx) error {
 func (pph *ProjectPoolHandler) ProjectPoolUpdate(c *fiber.Ctx) error {
 	return project_pool.ProjectPoolUpdate(c, pph.DB)
 }
+
+func (pph *ProjectPoolHandler) ProjectPoolById(c *fiber.Ctx) error {
+	return project_pool.ProjectPoolById(c, pph.DB)
+}
