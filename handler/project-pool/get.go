@@ -2,6 +2,7 @@ package project_pool
 
 import (
 	"bsc-scan-data-service/database/model"
+	project_pool_response_formatter "bsc-scan-data-service/handler/project-pool/utils"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -17,6 +18,8 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
+	projectPoolsResponse := []model.ProjectPoolResponse{}
+
 	projectPools := []model.ProjectPool{}
 	var count int64
 
@@ -25,9 +28,20 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 
 		poolsResult.Debug().Offset(-1).Count(&count)
 
+		for _, projectPool := range projectPools {
+
+			project := []model.Project{}
+
+			projectPoolList := []int64(projectPool.ProjectList)
+
+			db.Debug().Where("id IN ?", projectPoolList).Find(&project)
+
+			projectPoolsResponse = append(projectPoolsResponse, project_pool_response_formatter.ProjectPoolResponseFormatter(projectPool, project))
+		}
+
 		return c.JSON(fiber.Map{
 			"status":            "ok",
-			"project_pool_list": projectPools,
+			"project_pool_list": projectPoolsResponse,
 			"amount":            count,
 		})
 	}
@@ -36,9 +50,20 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 
 	poolsResult.Debug().Offset(-1).Count(&count)
 
+	for _, projectPool := range projectPools {
+
+		project := []model.Project{}
+
+		projectPoolList := []int64(projectPool.ProjectList)
+
+		db.Debug().Where("id IN ?", projectPoolList).Find(&project)
+
+		projectPoolsResponse = append(projectPoolsResponse, project_pool_response_formatter.ProjectPoolResponseFormatter(projectPool, project))
+	}
+
 	return c.JSON(fiber.Map{
 		"status":            "ok",
-		"project_pool_list": projectPools,
+		"project_pool_list": projectPoolsResponse,
 		"amount":            count,
 	})
 }
@@ -50,12 +75,20 @@ func ProjectPoolById(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
-	projectPools := model.ProjectPool{}
+	projectPool := model.ProjectPool{}
 
-	db.Debug().Where("id = ?", id).Preload("TierList", "deleted_at IS NULL").First(&projectPools)
+	db.Debug().Where("id = ?", id).Preload("TierList", "deleted_at IS NULL").First(&projectPool)
+
+	project := []model.Project{}
+
+	projectPoolList := []int64(projectPool.ProjectList)
+
+	db.Debug().Where("id IN ?", projectPoolList).Order("created_at asc").Find(&project)
+
+	projectPoolResponse := project_pool_response_formatter.ProjectPoolResponseFormatter(projectPool, project)
 
 	return c.JSON(map[string]interface{}{
 		"status": "ok",
-		"result": projectPools,
+		"result": projectPoolResponse,
 	})
 }
