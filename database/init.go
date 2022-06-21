@@ -10,13 +10,12 @@ import (
 	"gorm.io/gorm"
 )
 
-
 type DatabaseConfig struct {
-	Host				string
-	Port				int
-	User				string
-	Password		string
-	SchemaName	string
+	Host       string
+	Port       int
+	User       string
+	Password   string
+	SchemaName string
 }
 
 type DatabaseHandler struct {
@@ -40,11 +39,11 @@ func (dh *DatabaseHandler) InitialPostgresql() {
 		panic(dbPortError)
 	}
 
-	databaseConfig := DatabaseConfig {
-		Host: os.Getenv("DB_HOST"),
-		Port: dbPort,
-		User: os.Getenv("DB_USERNAME"),
-		Password: os.Getenv("DB_PASSWORD"),
+	databaseConfig := DatabaseConfig{
+		Host:       os.Getenv("DB_HOST"),
+		Port:       dbPort,
+		User:       os.Getenv("DB_USERNAME"),
+		Password:   os.Getenv("DB_PASSWORD"),
 		SchemaName: os.Getenv("DB_SCHEMA_NAME"),
 	}
 
@@ -53,14 +52,14 @@ func (dh *DatabaseHandler) InitialPostgresql() {
 	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", databaseConfig.Host, databaseConfig.Port, databaseConfig.User, databaseConfig.Password, databaseConfig.SchemaName)
 
 	dh.DB, err = gorm.Open(postgres.Open(psqlconn), &gorm.Config{})
-	
+
 	if err != nil {
 		panic(err)
 	}
 }
 
 func (dh *DatabaseHandler) InitialMigration() {
-	dh.DB.AutoMigrate(&model.BscProject{})
+	dh.DB.AutoMigrate(&model.Project{})
 	dh.DB.AutoMigrate(&model.ProjectPool{})
 	dh.DB.AutoMigrate(&model.ProjectTier{})
 }

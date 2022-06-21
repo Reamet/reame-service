@@ -11,8 +11,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func main () {
-	app :=  fiber.New()
+func main() {
+	app := fiber.New()
 
 	err := godotenv.Load()
 
@@ -22,14 +22,13 @@ func main () {
 
 	database.InitDbConfig()
 
-
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
 	}))
 
 	router.SetRouter(app)
-	
+
 	PORT := os.Getenv("PORT")
 	log.Fatal(app.Listen(":" + PORT))
 

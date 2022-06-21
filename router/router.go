@@ -3,6 +3,7 @@ package router
 import (
 	"bsc-scan-data-service/database"
 	"bsc-scan-data-service/handler"
+	"bsc-scan-data-service/handler/changer"
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
@@ -38,5 +39,9 @@ func SetRouter(app *fiber.App) {
 	poolProjectGroup.Post("/update-pool", poolProjectGroupHandler.ProjectPoolUpdate)
 	poolProjectGroup.Get("/update-pool", poolProjectGroupHandler.ProjectPoolUpdate)
 	poolProjectGroup.Get("/:id", poolProjectGroupHandler.ProjectPoolById)
+
+	// This route use to convert payload from BSCPad to new one to use to insert in the new ways
+	jsonChanger := api.Group("/json-changer")
+	jsonChanger.Post("/json-bscpad-changer-v1", changer.ChangerJson)
 
 }
