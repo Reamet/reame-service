@@ -35,6 +35,8 @@ func ProjectCreate(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
+	projectResponse := []model.Project{}
+
 	for _, project := range bodyPayload.ProjectList {
 
 		projectResult := model.Project{}
@@ -60,7 +62,7 @@ func ProjectCreate(c *fiber.Ctx, db *gorm.DB) error {
 			}
 
 			err := db.Debug().Create(&databasePayload).Error
-
+			projectResponse = append(projectResponse, databasePayload)
 			if err != nil {
 				return err
 			}
@@ -84,14 +86,15 @@ func ProjectCreate(c *fiber.Ctx, db *gorm.DB) error {
 			}
 
 			err := result.Debug().Updates(&databasePayload).Error
+			projectResponse = append(projectResponse, databasePayload)
 			if err != nil {
 				return err
 			}
 		}
-
 	}
 
 	return c.JSON(fiber.Map{
-		"status": "ok",
+		"status":  "ok",
+		"results": projectResponse,
 	})
 }
