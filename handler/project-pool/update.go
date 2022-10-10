@@ -23,6 +23,8 @@ type ProjectPoolUpdatePayload struct {
 	Term                      string            `json:"term"`
 	InvestmentPeriod          int               `json:"investmentPeriod"`
 	WithdrawalDate            time.Time         `json:"withdrawalDate"`
+	StartVoteDate             time.Time         `json:"startVoteDate"`
+	EndVoteDate               time.Time         `json:"endVoteDate"`
 	GoalRaised                int               `json:"goalRaised"`
 	GoalAllocation            int               `json:"goalAllocation"`
 	BasicInvestmentSuggestion int               `json:"basicInvestmentSuggestion"`
@@ -54,6 +56,8 @@ func ProjectPoolUpdate(c *fiber.Ctx, db *gorm.DB) error {
 		"term":                        bodyPayload.Term,
 		"investment_period":           bodyPayload.InvestmentPeriod,
 		"withdrawal_date":             bodyPayload.WithdrawalDate,
+		"start_vote_date":             bodyPayload.StartVoteDate,
+		"end_vote_date":               bodyPayload.EndVoteDate,
 		"goal_raised":                 bodyPayload.GoalRaised,
 		"goal_allocation":             bodyPayload.GoalAllocation,
 		"basic_investment_suggestion": bodyPayload.BasicInvestmentSuggestion,

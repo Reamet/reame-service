@@ -18,6 +18,8 @@ type ProjectPool struct {
 	Term                      string        `json:"term"`
 	InvestmentPeriod          int           `json:"investment_period"`
 	WithdrawalDate            time.Time     `json:"withdrawal_date"`
+	StartVoteDate             time.Time     `json:"start_vote_date"`
+	EndVoteDate               time.Time     `json:"end_vote_date"`
 	GoalRaised                int           `json:"goal_raised"`
 	GoalAllocation            int           `json:"goal_allocation"`
 	BasicInvestmentSuggestion int           `json:"basic_investment_suggestion"`
@@ -43,6 +45,8 @@ type ProjectPoolResponse struct {
 	Term                      string        `json:"term"`
 	InvestmentPeriod          int           `json:"investment_period"`
 	WithdrawalDate            time.Time     `json:"withdrawal_date"`
+	StartVoteDate             time.Time     `json:"start_vote_date"`
+	EndVoteDate               time.Time     `json:"end_vote_date"`
 	GoalRaised                int           `json:"goal_raised"`
 	GoalAllocation            int           `json:"goal_allocation"`
 	BasicInvestmentSuggestion int           `json:"basic_investment_suggestion"`
