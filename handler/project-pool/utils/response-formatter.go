@@ -11,6 +11,8 @@ func ProjectPoolResponseFormatter(projectPool model.ProjectPool, project []model
 		Source:                    projectPool.Source,
 		StartDate:                 projectPool.StartDate,
 		EndDate:                   projectPool.EndDate,
+		StartVoteDate:             projectPool.StartVoteDate,
+		EndVoteDate:               projectPool.EndVoteDate,
 		ProjectList:               project,
 		Term:                      projectPool.Term,
 		InvestmentPeriod:          projectPool.InvestmentPeriod,
