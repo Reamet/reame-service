@@ -33,6 +33,7 @@ type ProjectPoolUpdatePayload struct {
 	Stake                     int               `json:"stake"`
 	Status                    string            `json:"status"`
 	TierList                  []ProjectPoolTier `json:"tierList"`
+	PollList                  []ProjectPoolPoll `json:"pollList"`
 }
 
 func ProjectPoolUpdate(c *fiber.Ctx, db *gorm.DB) error {
@@ -75,6 +76,10 @@ func ProjectPoolUpdate(c *fiber.Ctx, db *gorm.DB) error {
 		"deleted_at": currentTime,
 	})
 
+	db.Debug().Model(&model.ProjectPoll{}).Where("pool_id = ?", bodyPayload.ID).Updates(map[string]interface{}{
+		"deleted_at": currentTime,
+	})
+
 	for _, tier := range bodyPayload.TierList {
 		tierDatabasePayload := model.ProjectTier{
 			PoolId:      bodyPayload.ID,
@@ -86,6 +91,19 @@ func ProjectPoolUpdate(c *fiber.Ctx, db *gorm.DB) error {
 
 		if tierErr != nil {
 			return tierErr
+		}
+	}
+
+	for _, poll := range bodyPayload.PollList {
+		pollDatabasePayload := model.ProjectPoll{
+			PoolId: bodyPayload.ID,
+			Title:  poll.Title,
+		}
+
+		pollErr := db.Debug().Create(&pollDatabasePayload).Error
+
+		if pollErr != nil {
+			return pollErr
 		}
 	}
 

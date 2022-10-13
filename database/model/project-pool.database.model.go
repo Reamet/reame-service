@@ -28,6 +28,7 @@ type ProjectPool struct {
 	Stake                     int           `json:"stake"`
 	Status                    string        `json:"status"`
 	TierList                  []ProjectTier `gorm:"foreignKey:PoolId" json:"tier_list"`
+	PollList                  []ProjectPoll `gorm:"foreignKey:PoolId" json:"poll_list"`
 	UpdatedAt                 time.Time     `json:"updated_at"`
 	CreatedAt                 time.Time     `json:"created_at"`
 	DeletedAt                 *time.Time    `json:"deleted_at"`
@@ -55,6 +56,7 @@ type ProjectPoolResponse struct {
 	Stake                     int           `json:"stake"`
 	Status                    string        `json:"status"`
 	TierList                  []ProjectTier `gorm:"foreignKey:PoolId" json:"tier_list"`
+	PollList                  []ProjectPoll `gorm:"foreignKey:PoolId" json:"poll_list"`
 	UpdatedAt                 time.Time     `json:"updated_at"`
 	CreatedAt                 time.Time     `json:"created_at"`
 	DeletedAt                 *time.Time    `json:"deleted_at"`

@@ -1,0 +1,49 @@
+package pool_poll
+
+import (
+	"bsc-scan-data-service/database/model"
+	"strconv"
+
+	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
+)
+
+func PollListByPoolId(c *fiber.Ctx, db *gorm.DB) error {
+	id, err := strconv.Atoi(c.Params("poolid"))
+
+	if err != nil {
+		return err
+	}
+
+	poolPoll := []model.ProjectPollResult{}
+	var count int64
+
+	projectPollResult := db.Debug().Where("pool_id = ?", id).Order("created_at asc").Find(&poolPoll)
+	projectPollResult.Debug().Offset(-1).Count(&count)
+
+	return c.JSON(map[string]interface{}{
+		"status":  "ok",
+		"results": poolPoll,
+		"amount":  count,
+	})
+}
+
+func PollResultById(c *fiber.Ctx, db *gorm.DB) error {
+	id, err := strconv.Atoi(c.Params("id"))
+
+	if err != nil {
+		return err
+	}
+
+	pollResult := model.ProjectPollResult{}
+	var count int64
+
+	projectPollResult := db.Debug().Where("id = ?", id).First(&pollResult)
+	projectPollResult.Debug().Offset(-1).Count(&count)
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+		"result": pollResult,
+		"amount": count,
+	})
+}

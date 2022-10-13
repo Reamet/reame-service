@@ -25,6 +25,7 @@ func ProjectPoolResponseFormatter(projectPool model.ProjectPool, project []model
 		Stake:                     projectPool.Stake,
 		Status:                    projectPool.Status,
 		TierList:                  projectPool.TierList,
+		PollList:                  projectPool.PollList,
 		UpdatedAt:                 projectPool.UpdatedAt,
 		CreatedAt:                 projectPool.CreatedAt,
 		DeletedAt:                 projectPool.DeletedAt,

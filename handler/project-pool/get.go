@@ -24,7 +24,7 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 	var count int64
 
 	if status != "" {
-		poolsResult := db.Debug().Where("status = ?", status).Preload("TierList", "deleted_at IS NULL").Limit(limit).Order("created_at desc").Offset(offset).Find(&projectPools)
+		poolsResult := db.Debug().Where("status = ?", status).Preload("TierList", "deleted_at IS NULL").Preload("PollList", "deleted_at IS NULL").Limit(limit).Order("created_at desc").Offset(offset).Find(&projectPools)
 
 		poolsResult.Debug().Offset(-1).Count(&count)
 
@@ -46,7 +46,7 @@ func ProjectPoolList(c *fiber.Ctx, db *gorm.DB) error {
 		})
 	}
 
-	poolsResult := db.Debug().Preload("TierList", "deleted_at IS NULL").Limit(limit).Order("created_at desc").Offset(offset).Find(&projectPools)
+	poolsResult := db.Debug().Preload("TierList", "deleted_at IS NULL").Preload("PollList", "deleted_at IS NULL").Limit(limit).Order("created_at desc").Offset(offset).Find(&projectPools)
 
 	poolsResult.Debug().Offset(-1).Count(&count)
 
@@ -90,5 +90,26 @@ func ProjectPoolById(c *fiber.Ctx, db *gorm.DB) error {
 	return c.JSON(map[string]interface{}{
 		"status": "ok",
 		"result": projectPoolResponse,
+	})
+}
+
+func ProjectPoolPollById(c *fiber.Ctx, db *gorm.DB) error {
+	id, err := strconv.Atoi(c.Params("id"))
+
+	if err != nil {
+		return err
+	}
+
+	projectPoll := []model.ProjectPoll{}
+	var count int64
+
+	projectPollResult := db.Debug().Where("pool_id = ?", id).Find(&projectPoll)
+
+	projectPollResult.Debug().Offset(-1).Count(&count)
+
+	return c.JSON(fiber.Map{
+		"status":     "ok",
+		"poll_lists": projectPoll,
+		"amount":     count,
 	})
 }

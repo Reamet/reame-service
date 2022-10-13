@@ -13,6 +13,10 @@ type ProjectPoolTier struct {
 	TokenAmount int `json:"tokenAmount"`
 }
 
+type ProjectPoolPoll struct {
+	Title string `json:"title"`
+}
+
 type ProjectPoolCreatePayload struct {
 	Title                     string            `json:"title"`
 	SubTitle                  string            `json:"subTitle"`
@@ -34,6 +38,7 @@ type ProjectPoolCreatePayload struct {
 	Stake                     int               `json:"stake"`
 	Status                    string            `json:"status"`
 	TierList                  []ProjectPoolTier `json:"tierList"`
+	PollList                  []ProjectPoolPoll `json:"pollList"`
 }
 
 func ProjectPoolCreate(c *fiber.Ctx, db *gorm.DB) error {
@@ -86,6 +91,21 @@ func ProjectPoolCreate(c *fiber.Ctx, db *gorm.DB) error {
 
 		if tierErr != nil {
 			return tierErr
+		}
+	}
+
+	if bodyPayload.PollList != nil {
+		for _, poll := range bodyPayload.PollList {
+			pollDatabasePayload := model.ProjectPoll{
+				PoolId: poolDatabasePayload.ID,
+				Title:  poll.Title,
+			}
+
+			pollErr := db.Debug().Create(&pollDatabasePayload).Error
+
+			if pollErr != nil {
+				return pollErr
+			}
 		}
 	}
 
