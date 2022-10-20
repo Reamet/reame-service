@@ -28,22 +28,22 @@ func PollListByPoolId(c *fiber.Ctx, db *gorm.DB) error {
 	})
 }
 
-func PollResultById(c *fiber.Ctx, db *gorm.DB) error {
-	id, err := strconv.Atoi(c.Params("id"))
+func PollResultByPollId(c *fiber.Ctx, db *gorm.DB) error {
+	id, err := strconv.Atoi(c.Params("pollid"))
 
 	if err != nil {
 		return err
 	}
 
-	pollResult := model.ProjectPollResult{}
+	pollResult := []model.ProjectPollResult{}
 	var count int64
 
-	projectPollResult := db.Debug().Where("id = ?", id).First(&pollResult)
+	projectPollResult := db.Debug().Where("poll_id = ?", id).Order("created_at asc").Find(&pollResult)
 	projectPollResult.Debug().Offset(-1).Count(&count)
 
 	return c.JSON(fiber.Map{
-		"status": "ok",
-		"result": pollResult,
-		"amount": count,
+		"status":  "ok",
+		"results": pollResult,
+		"amount":  count,
 	})
 }

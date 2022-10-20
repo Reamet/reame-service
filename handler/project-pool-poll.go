@@ -23,6 +23,6 @@ func (pph *PollHandler) PollListByPoolId(c *fiber.Ctx) error {
 	return pool_poll.PollListByPoolId(c, pph.DB)
 }
 
-func (pph *PollHandler) PollResultById(c *fiber.Ctx) error {
-	return pool_poll.PollResultById(c, pph.DB)
+func (pph *PollHandler) PollResultByPollId(c *fiber.Ctx) error {
+	return pool_poll.PollResultByPollId(c, pph.DB)
 }
