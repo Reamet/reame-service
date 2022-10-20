@@ -77,7 +77,7 @@ func ProjectPoolById(c *fiber.Ctx, db *gorm.DB) error {
 
 	projectPool := model.ProjectPool{}
 
-	db.Debug().Where("id = ?", id).Preload("TierList", "deleted_at IS NULL").First(&projectPool)
+	db.Debug().Where("id = ?", id).Preload("TierList", "deleted_at IS NULL").Preload("PollList", "deleted_at IS NULL").First(&projectPool)
 
 	project := []model.Project{}
 
