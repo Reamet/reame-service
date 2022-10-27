@@ -37,6 +37,7 @@ type ProjectPoolCreatePayload struct {
 	Ido                       int               `json:"ido"`
 	Stake                     int               `json:"stake"`
 	Status                    string            `json:"status"`
+	PoolAddress               string            `json:"poolAddress"`
 	TierList                  []ProjectPoolTier `json:"tierList"`
 	PollList                  []ProjectPoolPoll `json:"pollList"`
 }
@@ -70,6 +71,7 @@ func ProjectPoolCreate(c *fiber.Ctx, db *gorm.DB) error {
 		Ido:                       int(bodyPayload.Ido),
 		Stake:                     int(bodyPayload.Stake),
 		Status:                    bodyPayload.Status,
+		PoolAddress:               bodyPayload.PoolAddress,
 		UpdatedAt:                 currentTime,
 		CreatedAt:                 currentTime,
 	}
