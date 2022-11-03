@@ -29,6 +29,7 @@ type ProjectPoolUpdatePayload struct {
 	GoalAllocation            int               `json:"goalAllocation"`
 	BasicInvestmentSuggestion int               `json:"basicInvestmentSuggestion"`
 	DepositFee                int               `json:"depositFee"`
+	PoolAddress               string            `json:"poolAddress"`
 	Ido                       int               `json:"ido"`
 	Stake                     int               `json:"stake"`
 	Status                    string            `json:"status"`
@@ -65,6 +66,7 @@ func ProjectPoolUpdate(c *fiber.Ctx, db *gorm.DB) error {
 		"deposit_fee":                 bodyPayload.DepositFee,
 		"ido":                         bodyPayload.Ido,
 		"stake":                       bodyPayload.Stake,
+		"pool_address":                bodyPayload.PoolAddress,
 		"status":                      bodyPayload.Status,
 	}
 
