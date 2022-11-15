@@ -64,4 +64,5 @@ func (dh *DatabaseHandler) InitialMigration() {
 	dh.DB.AutoMigrate(&model.ProjectTier{})
 	dh.DB.AutoMigrate(&model.ProjectPoll{})
 	dh.DB.AutoMigrate(&model.ProjectPollResult{})
+	dh.DB.AutoMigrate(&model.Proposal{})
 }
