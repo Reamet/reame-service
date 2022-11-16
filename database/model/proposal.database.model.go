@@ -9,6 +9,7 @@ type Proposal struct {
 	Title         string     `json:"title"`
 	Description   string     `json:"description"`
 	PoolAddress   string     `json:"pool_address"`
+	PollId        string     `json:"poll_id"`
 	Status        string     `json:"status"`
 	StartVoteDate time.Time  `json:"start_vote_date"`
 	EndVoteDate   time.Time  `json:"end_vote_date"`

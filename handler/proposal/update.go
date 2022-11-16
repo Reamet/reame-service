@@ -12,6 +12,7 @@ import (
 
 type ProposalUpdatePayload struct {
 	PoolAddress   string    `json:"poolAddress"`
+	PollId        string    `json:"pollId"`
 	Title         string    `json:"title"`
 	Description   string    `json:"description"`
 	Status        string    `json:"status"`
@@ -37,6 +38,7 @@ func ProposalUpdate(c *fiber.Ctx, db *gorm.DB) error {
 		"title":           bodyPayload.Title,
 		"description":     bodyPayload.Description,
 		"pool_address":    bodyPayload.PoolAddress,
+		"poll_id":         bodyPayload.PollId,
 		"updated_at":      currentTime,
 		"status":          bodyPayload.Status,
 		"start_vote_date": bodyPayload.StartVoteDate,

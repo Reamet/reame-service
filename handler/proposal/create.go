@@ -10,6 +10,7 @@ import (
 
 type ProposalCreatePayload struct {
 	PoolAddress   string    `json:"poolAddress"`
+	PollId        string    `json:"pollId"`
 	Title         string    `json:"title"`
 	Description   string    `json:"description"`
 	Status        string    `json:"status"`
@@ -32,6 +33,7 @@ func ProposalCreate(c *fiber.Ctx, db *gorm.DB) error {
 		Status:        bodyPayload.Status,
 		StartVoteDate: bodyPayload.StartVoteDate,
 		EndVoteDate:   bodyPayload.EndVoteDate,
+		PollId:        bodyPayload.PollId,
 		CreatedAt:     currentTime,
 	}
 
