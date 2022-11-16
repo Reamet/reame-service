@@ -53,8 +53,8 @@ func SetRouter(app *fiber.App) {
 	proposalGroupHandler.Init(database.Database.DB)
 	proposalGroup.Post("/create", proposalGroupHandler.ProposalCreate)
 	proposalGroup.Post("/update/:id", proposalGroupHandler.ProposalUpdate)
-	proposalGroup.Get("/:id", proposalGroupHandler.ProposalById)
 	proposalGroup.Get("/lists", proposalGroupHandler.ProposalLists)
+	proposalGroup.Get("/:id", proposalGroupHandler.ProposalById)
 
 	// This route use to convert payload from BSCPad to new one to use to insert in the new ways
 	jsonChanger := api.Group("/json-changer")

@@ -9,7 +9,7 @@ import (
 )
 
 type ProposalCreatePayload struct {
-	PoolAddress   string    `json:"pool_address"`
+	PoolAddress   string    `json:"poolAddress"`
 	Title         string    `json:"title"`
 	Description   string    `json:"description"`
 	Status        string    `json:"status"`
