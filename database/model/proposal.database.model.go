@@ -8,7 +8,7 @@ type Proposal struct {
 	ID            int        `json:"id" gorm:"primaryKey;autoIncrement"`
 	Title         string     `json:"title"`
 	Description   string     `json:"description"`
-	PoolId        int        `json:"pool_id"`
+	PoolAddress   string     `json:"pool_address"`
 	Status        string     `json:"status"`
 	StartVoteDate time.Time  `json:"start_vote_date"`
 	EndVoteDate   time.Time  `json:"end_vote_date"`

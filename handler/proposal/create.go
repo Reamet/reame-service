@@ -9,7 +9,7 @@ import (
 )
 
 type ProposalCreatePayload struct {
-	PoolId        int       `json:"poolId"`
+	PoolAddress   string    `json:"pool_address"`
 	Title         string    `json:"title"`
 	Description   string    `json:"description"`
 	Status        string    `json:"status"`
@@ -26,7 +26,7 @@ func ProposalCreate(c *fiber.Ctx, db *gorm.DB) error {
 	}
 
 	proposalDatabasePayload := model.Proposal{
-		PoolId:        int(bodyPayload.PoolId),
+		PoolAddress:   bodyPayload.PoolAddress,
 		Title:         bodyPayload.Title,
 		Description:   bodyPayload.Description,
 		Status:        bodyPayload.Status,
