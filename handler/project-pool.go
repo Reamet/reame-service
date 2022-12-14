@@ -34,3 +34,7 @@ func (pph *ProjectPoolHandler) ProjectPoolById(c *fiber.Ctx) error {
 func (pph *ProjectPoolHandler) ProjectPoolPollById(c *fiber.Ctx) error {
 	return project_pool.ProjectPoolPollById(c, pph.DB)
 }
+
+func (pph *ProjectPoolHandler) ProjectPoolProposalOpenActive(c *fiber.Ctx) error {
+	return project_pool.ProjectPoolProposalOpenActive(c, pph.DB)
+}

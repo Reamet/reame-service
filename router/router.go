@@ -38,6 +38,7 @@ func SetRouter(app *fiber.App) {
 	poolProjectGroup.Get("/list-pools", poolProjectGroupHandler.ProjectPoolList)
 	poolProjectGroup.Post("/update-pool", poolProjectGroupHandler.ProjectPoolUpdate)
 	poolProjectGroup.Get("/update-pool", poolProjectGroupHandler.ProjectPoolUpdate)
+	poolProjectGroup.Get("/list-pools-proposal", poolProjectGroupHandler.ProjectPoolProposalOpenActive)
 	poolProjectGroup.Get("/:id", poolProjectGroupHandler.ProjectPoolById)
 	poolProjectGroup.Get("/poll/:id", poolProjectGroupHandler.ProjectPoolPollById)
 
