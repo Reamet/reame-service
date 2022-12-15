@@ -2,6 +2,7 @@ package main
 
 import (
 	"bsc-scan-data-service/database"
+	"bsc-scan-data-service/env"
 	"bsc-scan-data-service/router"
 	"log"
 	"os"
@@ -20,6 +21,7 @@ func main() {
 		log.Fatal("Error loading .env file: ", err)
 	}
 
+	env.Load()
 	database.InitDbConfig()
 
 	app.Use(cors.New(cors.Config{

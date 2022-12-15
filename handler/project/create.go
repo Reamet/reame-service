@@ -2,10 +2,13 @@ package project
 
 import (
 	"bsc-scan-data-service/database/model"
+	"bsc-scan-data-service/handler/upload"
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -110,12 +113,23 @@ func ProjectCreate(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
+	uuidWithHyphen := uuid.New()
+	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
+
+	var logoLocation = ""
+	if len(bodyPayload.Logo) > 0 {
+		logoOutput, err := upload.AWSUpload(bodyPayload.Logo, fmt.Sprintf("/%s/%s", "seedtopiaissue", uuid))
+		if err == nil {
+			logoLocation = logoOutput.Location
+		}
+	}
+
 	databasePayload := model.Project{
 		ReferredId:  bodyPayload.ReferredId,
 		Title:       bodyPayload.Title,
 		Description: bodyPayload.Description,
 		Source:      bodyPayload.ProjectSource,
-		Logo:        bodyPayload.Logo,
+		Logo:        logoLocation,
 		Website:     bodyPayload.Website,
 		Information: bodyPayload.Information,
 		Telegram:    bodyPayload.Telegram,
@@ -150,19 +164,18 @@ func ProjectUpdate(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
-	databasePayload := model.Project{
-		Title:       bodyPayload.Title,
-		Description: bodyPayload.Description,
-		Source:      bodyPayload.ProjectSource,
-		Logo:        bodyPayload.Logo,
-		Website:     bodyPayload.Website,
-		Information: bodyPayload.Information,
-		Telegram:    bodyPayload.Telegram,
-		Twitter:     bodyPayload.Twitter,
-		Discord:     bodyPayload.Discord,
-		Email:       bodyPayload.Email,
-		Facebook:    bodyPayload.Facebook,
-		Instagram:   bodyPayload.Instagram,
+	databasePayload := map[string]interface{}{
+		"title":       bodyPayload.Title,
+		"description": bodyPayload.Description,
+		"source":      bodyPayload.ProjectSource,
+		"website":     bodyPayload.Website,
+		"information": bodyPayload.Information,
+		"telegram":    bodyPayload.Telegram,
+		"twitter":     bodyPayload.Twitter,
+		"discord":     bodyPayload.Discord,
+		"email":       bodyPayload.Email,
+		"facebook":    bodyPayload.Facebook,
+		"instagram":   bodyPayload.Instagram,
 	}
 
 	projectModel := model.Project{}
