@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: [ self-hosted, rpc2 ]
+    runs-on: [self-hosted, rpc2]
 
     steps:
       - uses: actions/checkout@v2
@@ -21,6 +21,11 @@ jobs:
           DB_USERNAME: ${{ secrets.DEV_DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
           DB_SCHEMA_NAME: ${{ secrets.DEV_DB_SCHEMA_NAME }}
+          AWS_S3_ACCESS_KEY: ${{ secrets.AWS_S3_ACCESS_KEY }}
+          AWS_S3_SECRET_KEY: ${{ secrets.AWS_S3_SECRET_KEY }}
+          AWS_S3_REGION: ${{ secrets.AWS_S3_REGION }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_S3_BUCKET_ENDPOINT: ${{ secrets.AWS_S3_BUCKET_ENDPOINT }}
           PORT: ${{ secrets.DEV_PORT }}
         run: |
           echo "DB_HOST=$DB_HOST
@@ -28,6 +33,11 @@ jobs:
           DB_USERNAME=$DB_USERNAME
           DB_PASSWORD=$DB_PASSWORD
           DB_SCHEMA_NAME=$DB_SCHEMA_NAME
+          AWS_S3_ACCESS_KEY=$AWS_S3_ACCESS_KEY
+          AWS_S3_SECRET_KEY=$AWS_S3_SECRET_KEY
+          AWS_S3_REGION=$AWS_S3_REGION
+          AWS_S3_BUCKET=$AWS_S3_BUCKET
+          AWS_S3_BUCKET_ENDPOINT=$AWS_S3_BUCKET_ENDPOINT
           PORT=$PORT" > .env
 
       - name: Build Docker image
