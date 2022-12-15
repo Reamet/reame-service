@@ -21,8 +21,16 @@ type ProjectPayload struct {
 	ProjectList   []model.Project `json:"projectList"`
 }
 
+func (ph *ProjectHandler) ProjectCreateJson(c *fiber.Ctx) error {
+	return project.ProjectCreateJson(c, ph.DB)
+}
+
 func (ph *ProjectHandler) ProjectCreate(c *fiber.Ctx) error {
 	return project.ProjectCreate(c, ph.DB)
+}
+
+func (ph *ProjectHandler) ProjectUpdate(c *fiber.Ctx) error {
+	return project.ProjectUpdate(c, ph.DB)
 }
 
 func (ph *ProjectHandler) ProjectLists(c *fiber.Ctx) error {
