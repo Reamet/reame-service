@@ -12,6 +12,7 @@ type Project struct {
 	Source      string     `json:"source"`
 	Logo        string     `json:"logo"`
 	Website     string     `json:"website"`
+	Status      string     `json:"status"`
 	Telegram    *string    `json:"telegram"`
 	Twitter     *string    `json:"twitter"`
 	Discord     *string    `json:"discord"`

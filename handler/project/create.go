@@ -19,6 +19,7 @@ type ProjectListPayload struct {
 	Logo          string   `json:"logo"`
 	Website       string   `json:"website"`
 	ProjectSource string   `json:"projectSource"`
+	Status        string   `json:"status"`
 	Telegram      *string  `json:"telegram"`
 	Twitter       *string  `json:"twitter"`
 	Discord       *string  `json:"discord"`
@@ -131,6 +132,7 @@ func ProjectCreate(c *fiber.Ctx, db *gorm.DB) error {
 		Source:      bodyPayload.ProjectSource,
 		Logo:        logoLocation,
 		Website:     bodyPayload.Website,
+		Status:      bodyPayload.Status,
 		Information: bodyPayload.Information,
 		Telegram:    bodyPayload.Telegram,
 		Twitter:     bodyPayload.Twitter,
@@ -196,12 +198,13 @@ func ProjectUpdate(c *fiber.Ctx, db *gorm.DB) error {
 		"logo":        logoLocation,
 		"facebook":    bodyPayload.Facebook,
 		"instagram":   bodyPayload.Instagram,
+		"status":      bodyPayload.Status,
 	}
 
-	poolResult := db.Debug().Where("ID = ?", id).First(&projectModel).Updates(&databasePayload)
+	projectResult := db.Debug().Where("ID = ?", id).First(&projectModel).Updates(&databasePayload)
 
 	return c.JSON(fiber.Map{
 		"status":  "ok",
-		"message": fmt.Sprintf("Row Affected By : %s row", strconv.FormatInt(poolResult.RowsAffected, 10)),
+		"message": fmt.Sprintf("Row Affected By : %s row", strconv.FormatInt(projectResult.RowsAffected, 10)),
 	})
 }
