@@ -133,6 +133,7 @@ func ProjectCreate(c *fiber.Ctx, db *gorm.DB) error {
 
 	return c.JSON(fiber.Map{
 		"status": "ok",
+		"id":     databasePayload.ID,
 	})
 }
 
