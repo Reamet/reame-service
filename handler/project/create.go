@@ -164,6 +164,25 @@ func ProjectUpdate(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
+	projectModel := model.Project{}
+
+	db.Debug().Where("ID = ?", id).First(&projectModel)
+
+	uuidWithHyphen := uuid.New()
+	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
+
+	var logoLocation = ""
+	if len(projectModel.Logo) > 0 {
+		logoLocation = projectModel.Logo
+	}
+
+	if len(bodyPayload.Logo) > 0 {
+		logoOutput, err := upload.AWSUpload(bodyPayload.Logo, fmt.Sprintf("/%s/%s", "seedtopiaissue", uuid))
+		if err == nil {
+			logoLocation = logoOutput.Location
+		}
+	}
+
 	databasePayload := map[string]interface{}{
 		"title":       bodyPayload.Title,
 		"description": bodyPayload.Description,
@@ -174,11 +193,10 @@ func ProjectUpdate(c *fiber.Ctx, db *gorm.DB) error {
 		"twitter":     bodyPayload.Twitter,
 		"discord":     bodyPayload.Discord,
 		"email":       bodyPayload.Email,
+		"logo":        logoLocation,
 		"facebook":    bodyPayload.Facebook,
 		"instagram":   bodyPayload.Instagram,
 	}
-
-	projectModel := model.Project{}
 
 	poolResult := db.Debug().Where("ID = ?", id).First(&projectModel).Updates(&databasePayload)
 
