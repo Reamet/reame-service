@@ -1,4 +1,4 @@
-package proposal
+package collection
 
 import (
 	"reame-service/database/model"
@@ -31,7 +31,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
-	proposalDatabasePayload := model.Collection{
+	collectionDatabasePayload := model.Collection{
 		CollectionProfileImage: bodyPayload.CollectionProfileImage,
 		CollectionCoverImage:   bodyPayload.CollectionCoverImage,
 		Name:                   bodyPayload.Name,
@@ -47,7 +47,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		CreatedAt:              currentTime,
 	}
 
-	err := db.Debug().Create(&proposalDatabasePayload).Error
+	err := db.Debug().Create(&collectionDatabasePayload).Error
 
 	if err != nil {
 		return err
