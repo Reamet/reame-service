@@ -1,4 +1,4 @@
-module bsc-scan-data-service
+module reame-service
 
 go 1.18
 

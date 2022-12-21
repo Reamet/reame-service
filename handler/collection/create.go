@@ -1,14 +1,14 @@
 package proposal
 
 import (
-	"bsc-scan-data-service/database/model"
+	"reame-service/database/model"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
-type ProposalCreatePayload struct {
+type CreatePayload struct {
 	PoolAddress   string    `json:"poolAddress"`
 	PollId        string    `json:"pollId"`
 	Title         string    `json:"title"`
@@ -18,8 +18,8 @@ type ProposalCreatePayload struct {
 	EndVoteDate   time.Time `json:"endVoteDate"`
 }
 
-func ProposalCreate(c *fiber.Ctx, db *gorm.DB) error {
-	bodyPayload := ProposalCreatePayload{}
+func Create(c *fiber.Ctx, db *gorm.DB) error {
+	bodyPayload := CreatePayload{}
 	currentTime := time.Now()
 
 	if err := c.BodyParser(&bodyPayload); err != nil {

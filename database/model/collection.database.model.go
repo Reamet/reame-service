@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Proposal struct {
+type Collection struct {
 	ID            int        `json:"id" gorm:"primaryKey;autoIncrement"`
 	Title         string     `json:"title"`
 	Description   string     `json:"description"`

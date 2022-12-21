@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bsc-scan-data-service/database"
-	"bsc-scan-data-service/env"
-	"bsc-scan-data-service/router"
 	"log"
 	"os"
+	"reame-service/database"
+	"reame-service/env"
+	"reame-service/router"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
