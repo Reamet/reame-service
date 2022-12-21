@@ -1,10 +1,14 @@
 package collection
 
 import (
+	"fmt"
 	"reame-service/database/model"
+	"reame-service/handler/upload"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -31,9 +35,28 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
+	uuidWithHyphen := uuid.New()
+	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
+
+	var logoProfile = ""
+	if len(bodyPayload.CollectionProfileImage) > 0 {
+		logoOutput, err := upload.AWSUpload(bodyPayload.CollectionProfileImage, fmt.Sprintf("/%s/%s", "collection", uuid))
+		if err == nil {
+			logoProfile = logoOutput.Location
+		}
+	}
+
+	var logoCover = ""
+	if len(bodyPayload.CollectionProfileImage) > 0 {
+		logoOutput, err := upload.AWSUpload(bodyPayload.CollectionProfileImage, fmt.Sprintf("/%s/%s", "collection", uuid))
+		if err == nil {
+			logoCover = logoOutput.Location
+		}
+	}
+
 	collectionDatabasePayload := model.Collection{
-		CollectionProfileImage: bodyPayload.CollectionProfileImage,
-		CollectionCoverImage:   bodyPayload.CollectionCoverImage,
+		CollectionProfileImage: logoProfile,
+		CollectionCoverImage:   logoCover,
 		Name:                   bodyPayload.Name,
 		Description:            bodyPayload.Description,
 		ShortUrl:               bodyPayload.ShortUrl,
