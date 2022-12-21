@@ -1,11 +1,11 @@
 package upload
 
 import (
-	"bsc-scan-data-service/env"
 	"bytes"
 	"encoding/base64"
 	"fmt"
 	"log"
+	"reame-service/env"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"

@@ -1,9 +1,9 @@
 package database
 
 import (
-	"bsc-scan-data-service/database/model"
 	"fmt"
 	"os"
+	"reame-service/database/model"
 	"strconv"
 
 	"gorm.io/driver/postgres"
@@ -59,10 +59,5 @@ func (dh *DatabaseHandler) InitialPostgresql() {
 }
 
 func (dh *DatabaseHandler) InitialMigration() {
-	dh.DB.AutoMigrate(&model.Project{})
-	dh.DB.AutoMigrate(&model.ProjectPool{})
-	dh.DB.AutoMigrate(&model.ProjectTier{})
-	dh.DB.AutoMigrate(&model.ProjectPoll{})
-	dh.DB.AutoMigrate(&model.ProjectPollResult{})
-	dh.DB.AutoMigrate(&model.Proposal{})
+	dh.DB.AutoMigrate(&model.Collection{})
 }
