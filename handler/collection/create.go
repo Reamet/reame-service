@@ -26,7 +26,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		return err
 	}
 
-	proposalDatabasePayload := model.Proposal{
+	proposalDatabasePayload := model.Collection{
 		PoolAddress:   bodyPayload.PoolAddress,
 		Title:         bodyPayload.Title,
 		Description:   bodyPayload.Description,
