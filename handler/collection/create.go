@@ -9,13 +9,18 @@ import (
 )
 
 type CreatePayload struct {
-	PoolAddress   string    `json:"poolAddress"`
-	PollId        string    `json:"pollId"`
-	Title         string    `json:"title"`
-	Description   string    `json:"description"`
-	Status        string    `json:"status"`
-	StartVoteDate time.Time `json:"startVoteDate"`
-	EndVoteDate   time.Time `json:"endVoteDate"`
+	CollectionProfileImage string `json:"collection_profile_image"`
+	CollectionCoverImage   string `json:"collection_cover_image"`
+	Name                   string `json:"name"`
+	Description            string `json:"description"`
+	ShortUrl               string `json:"short_url"`
+	Category               string `json:"category"`
+	Website                string `json:"website"`
+	Facebook               string `json:"facebook"`
+	Twitter                string `json:"twitter"`
+	Discord                string `json:"discord"`
+	Telegram               string `json:"telegram"`
+	Medium                 string `json:"medium"`
 }
 
 func Create(c *fiber.Ctx, db *gorm.DB) error {
@@ -27,14 +32,19 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 	}
 
 	proposalDatabasePayload := model.Collection{
-		PoolAddress:   bodyPayload.PoolAddress,
-		Title:         bodyPayload.Title,
-		Description:   bodyPayload.Description,
-		Status:        bodyPayload.Status,
-		StartVoteDate: bodyPayload.StartVoteDate,
-		EndVoteDate:   bodyPayload.EndVoteDate,
-		PollId:        bodyPayload.PollId,
-		CreatedAt:     currentTime,
+		CollectionProfileImage: bodyPayload.CollectionProfileImage,
+		CollectionCoverImage:   bodyPayload.CollectionCoverImage,
+		Name:                   bodyPayload.Name,
+		Description:            bodyPayload.Description,
+		ShortUrl:               bodyPayload.ShortUrl,
+		Category:               bodyPayload.Category,
+		Website:                bodyPayload.Website,
+		Facebook:               bodyPayload.Facebook,
+		Twitter:                bodyPayload.Twitter,
+		Discord:                bodyPayload.Discord,
+		Telegram:               bodyPayload.Telegram,
+		Medium:                 bodyPayload.Medium,
+		CreatedAt:              currentTime,
 	}
 
 	err := db.Debug().Create(&proposalDatabasePayload).Error
