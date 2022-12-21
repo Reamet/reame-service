@@ -33,6 +33,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		Address:     bodyPayload.Address,
 		Royalties:   bodyPayload.Royalties,
 		CreatedAt:   currentTime,
+		UpdatedAt:   currentTime,
 	}
 
 	err := db.Debug().Create(&mintDatabasePayload).Error

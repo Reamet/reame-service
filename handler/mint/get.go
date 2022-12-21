@@ -12,7 +12,7 @@ func MintLists(c *fiber.Ctx, db *gorm.DB) error {
 	offset, err := strconv.Atoi(c.Query("offset"))
 	limit, err := strconv.Atoi(c.Query("limit"))
 	address := c.Query("address")
-	category := c.Query("category")
+	collection := c.Query("collection")
 
 	if err != nil {
 		return err
@@ -21,7 +21,7 @@ func MintLists(c *fiber.Ctx, db *gorm.DB) error {
 	mints := []model.Mint{}
 	var count int64
 
-	if address != "" || category == "" {
+	if address != "" && collection == "" {
 		result := db.Debug().Where("address = ?", address).Limit(limit).Offset(offset).Find(&mints)
 
 		result.Debug().Offset(-1).Count(&count)
@@ -33,8 +33,8 @@ func MintLists(c *fiber.Ctx, db *gorm.DB) error {
 		})
 	}
 
-	if address == "" || category != "" {
-		result := db.Debug().Where("category = ?", category).Limit(limit).Offset(offset).Find(&mints)
+	if address == "" && collection != "" {
+		result := db.Debug().Where("collection = ?", collection).Limit(limit).Offset(offset).Find(&mints)
 
 		result.Debug().Offset(-1).Count(&count)
 
@@ -45,8 +45,8 @@ func MintLists(c *fiber.Ctx, db *gorm.DB) error {
 		})
 	}
 
-	if address != "" && category != "" {
-		result := db.Debug().Where("address = ? AND category = ?", address, category).Limit(limit).Offset(offset).Find(&mints)
+	if address != "" && collection != "" {
+		result := db.Debug().Where("address = ? AND collection = ?", address, collection).Limit(limit).Offset(offset).Find(&mints)
 
 		result.Debug().Offset(-1).Count(&count)
 

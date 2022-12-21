@@ -72,6 +72,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		Telegram:               bodyPayload.Telegram,
 		Medium:                 bodyPayload.Medium,
 		CreatedAt:              currentTime,
+		UpdatedAt:              currentTime,
 	}
 
 	err := db.Debug().Create(&collectionDatabasePayload).Error
