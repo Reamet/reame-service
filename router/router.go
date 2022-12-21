@@ -23,11 +23,19 @@ func SetRouter(app *fiber.App) {
 		return c.JSON(fiber.Map{"message": fmt.Sprintf("Hello! This is Seedtopia RESTful API. 👏 %s", VERSION)})
 	})
 
-	reameServiceGroup := api.Group("/collection")
-	reameServiceGroupHandler := handler.CollectionHandler{}
-	reameServiceGroupHandler.Init(database.Database.DB)
-	reameServiceGroup.Post("/create", reameServiceGroupHandler.Create)
-	reameServiceGroup.Get("/lists", reameServiceGroupHandler.CollectionLists)
-	reameServiceGroup.Post("/update/:id", reameServiceGroupHandler.Update)
-	reameServiceGroup.Get("/:id", reameServiceGroupHandler.CollectionById)
+	reameServiceCollectionGroup := api.Group("/collection")
+	reameServiceCollectionGroupHandler := handler.CollectionHandler{}
+	reameServiceCollectionGroupHandler.Init(database.Database.DB)
+	reameServiceCollectionGroup.Post("/create", reameServiceCollectionGroupHandler.Create)
+	reameServiceCollectionGroup.Get("/lists", reameServiceCollectionGroupHandler.CollectionLists)
+	reameServiceCollectionGroup.Post("/update/:id", reameServiceCollectionGroupHandler.Update)
+	reameServiceCollectionGroup.Get("/:id", reameServiceCollectionGroupHandler.CollectionById)
+
+	reameServiceMintGroup := api.Group("/mint")
+	reameServiceMintGroupHandler := handler.MintHandler{}
+	reameServiceMintGroupHandler.Init(database.Database.DB)
+	reameServiceMintGroup.Post("/create", reameServiceMintGroupHandler.Create)
+	reameServiceMintGroup.Post("/update/:id", reameServiceMintGroupHandler.Update)
+	reameServiceMintGroup.Get("/lists", reameServiceMintGroupHandler.MintLists)
+	reameServiceMintGroup.Get("/:id", reameServiceMintGroupHandler.GetMintById)
 }
