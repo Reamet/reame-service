@@ -46,9 +46,11 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		}
 	}
 
+	uuid1 := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
+
 	var logoCover = ""
 	if len(bodyPayload.CollectionProfileImage) > 0 {
-		logoOutput, err := upload.AWSUpload(bodyPayload.CollectionProfileImage, fmt.Sprintf("/%s/%s", "collection", uuid))
+		logoOutput, err := upload.AWSUpload(bodyPayload.CollectionProfileImage, fmt.Sprintf("/%s/%s", "collection", uuid1))
 		if err == nil {
 			logoCover = logoOutput.Location
 		}
