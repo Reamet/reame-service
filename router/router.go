@@ -24,8 +24,10 @@ func SetRouter(app *fiber.App) {
 	})
 
 	reameServiceGroup := api.Group("/collection")
-	reameServiceGroupHandler := handler.ProjectHandler{}
+	reameServiceGroupHandler := handler.CollectionHandler{}
 	reameServiceGroupHandler.Init(database.Database.DB)
 	reameServiceGroup.Post("/create", reameServiceGroupHandler.Create)
-
+	reameServiceGroup.Get("/lists", reameServiceGroupHandler.CollectionLists)
+	reameServiceGroup.Post("/update/:id", reameServiceGroupHandler.Update)
+	reameServiceGroup.Get("/:id", reameServiceGroupHandler.CollectionById)
 }

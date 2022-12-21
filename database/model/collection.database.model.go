@@ -19,5 +19,6 @@ type Collection struct {
 	Telegram               string     `json:"telegram"`
 	Medium                 string     `json:"medium"`
 	CreatedAt              time.Time  `json:"created_at"`
+	UpdatedAt              *time.Time `json:"updated_at"`
 	DeletedAt              *time.Time `json:"deleted_at"`
 }
