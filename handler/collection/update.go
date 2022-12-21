@@ -80,13 +80,13 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 		"description":              bodyPayload.Description,
 		"short_url":                bodyPayload.ShortUrl,
 		"category":                 bodyPayload.Category,
-		"updated_at":               currentTime,
 		"website":                  bodyPayload.Website,
 		"facebook":                 bodyPayload.Facebook,
 		"twitter":                  bodyPayload.Twitter,
 		"discord":                  bodyPayload.Discord,
 		"telegram":                 bodyPayload.Telegram,
 		"medium":                   bodyPayload.Medium,
+		"updated_at":               currentTime,
 	}
 
 	collectionResult := db.Debug().Where("ID = ?", id).First(&collectionModel).Updates(&databasePayload)
