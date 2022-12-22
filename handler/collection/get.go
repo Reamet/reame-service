@@ -11,6 +11,7 @@ import (
 func CollectionLists(c *fiber.Ctx, db *gorm.DB) error {
 	offset, err := strconv.Atoi(c.Query("offset"))
 	limit, err := strconv.Atoi(c.Query("limit"))
+	address := c.Query("address")
 
 	if err != nil {
 		return err
@@ -19,9 +20,21 @@ func CollectionLists(c *fiber.Ctx, db *gorm.DB) error {
 	collections := []model.Collection{}
 	var count int64
 
-	projectResult := db.Debug().Limit(limit).Offset(offset).Find(&collections)
+	if address != "" {
+		results := db.Debug().Where("address = ?", address).Limit(limit).Offset(offset).Find(&collections)
 
-	projectResult.Debug().Offset(-1).Count(&count)
+		results.Debug().Offset(-1).Count(&count)
+
+		return c.JSON(fiber.Map{
+			"status":  "ok",
+			"results": collections,
+			"total":   count,
+		})
+	}
+
+	results := db.Debug().Limit(limit).Offset(offset).Find(&collections)
+
+	results.Debug().Offset(-1).Count(&count)
 
 	return c.JSON(fiber.Map{
 		"status":  "ok",

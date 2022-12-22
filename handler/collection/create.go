@@ -18,7 +18,6 @@ type CreatePayload struct {
 	Name                   string `json:"name"`
 	Description            string `json:"description"`
 	ShortUrl               string `json:"short_url"`
-	Category               string `json:"category"`
 	Address                string `json:"address"`
 	Website                string `json:"website"`
 	Facebook               string `json:"facebook"`
@@ -63,7 +62,6 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		Name:                   bodyPayload.Name,
 		Description:            bodyPayload.Description,
 		ShortUrl:               bodyPayload.ShortUrl,
-		Category:               bodyPayload.Category,
 		Address:                bodyPayload.Address,
 		Website:                bodyPayload.Website,
 		Facebook:               bodyPayload.Facebook,

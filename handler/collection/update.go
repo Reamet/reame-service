@@ -19,7 +19,7 @@ type UpdatePayload struct {
 	Name                   string `json:"name"`
 	Description            string `json:"description"`
 	ShortUrl               string `json:"short_url"`
-	Category               string `json:"category"`
+	Address                string `json:"address"`
 	Website                string `json:"website"`
 	Facebook               string `json:"facebook"`
 	Twitter                string `json:"twitter"`
@@ -79,13 +79,13 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 		"name":                     bodyPayload.Name,
 		"description":              bodyPayload.Description,
 		"short_url":                bodyPayload.ShortUrl,
-		"category":                 bodyPayload.Category,
 		"website":                  bodyPayload.Website,
 		"facebook":                 bodyPayload.Facebook,
 		"twitter":                  bodyPayload.Twitter,
 		"discord":                  bodyPayload.Discord,
 		"telegram":                 bodyPayload.Telegram,
 		"medium":                   bodyPayload.Medium,
+		"address":                  bodyPayload.Address,
 		"updated_at":               currentTime,
 	}
 

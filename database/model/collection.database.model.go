@@ -11,7 +11,6 @@ type Collection struct {
 	Name                   string     `json:"name"`
 	Description            string     `json:"description"`
 	ShortUrl               string     `json:"short_url"`
-	Category               string     `json:"category"`
 	Address                string     `json:"address"`
 	Website                string     `json:"website"`
 	Facebook               string     `json:"facebook"`
