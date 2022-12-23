@@ -30,3 +30,7 @@ func (ph *CollectionHandler) CollectionLists(c *fiber.Ctx) error {
 func (ph *CollectionHandler) CollectionById(c *fiber.Ctx) error {
 	return collection.CollectionById(c, ph.DB)
 }
+
+func (ph *CollectionHandler) CollectionByShortUrl(c *fiber.Ctx) error {
+	return collection.CollectionByShortUrl(c, ph.DB)
+}

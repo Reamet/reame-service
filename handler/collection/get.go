@@ -35,12 +35,14 @@ func CollectionLists(c *fiber.Ctx, db *gorm.DB) error {
 	results := db.Debug().Limit(limit).Offset(offset).Find(&collections)
 
 	results.Debug().Offset(-1).Count(&count)
-
-	return c.JSON(fiber.Map{
-		"status":  "ok",
-		"results": collections,
-		"total":   count,
-	})
+	if results.Error == nil {
+		return c.JSON(fiber.Map{
+			"status":  "ok",
+			"results": collections,
+			"total":   count,
+		})
+	}
+	return fiber.ErrNotFound
 }
 
 func CollectionById(c *fiber.Ctx, db *gorm.DB) error {
@@ -52,10 +54,29 @@ func CollectionById(c *fiber.Ctx, db *gorm.DB) error {
 
 	collection := model.Collection{}
 
-	db.Debug().Where("id = ?", id).First(&collection)
+	result := db.Debug().Where("id = ?", id).First(&collection)
 
-	return c.JSON(map[string]interface{}{
-		"status": "ok",
-		"result": collection,
-	})
+	if result.Error == nil {
+		return c.JSON(map[string]interface{}{
+			"status": "ok",
+			"result": collection,
+		})
+	}
+	return fiber.ErrNotFound
+}
+
+func CollectionByShortUrl(c *fiber.Ctx, db *gorm.DB) error {
+	shortUrl := c.Query("short_url")
+
+	collection := model.Collection{}
+
+	result := db.Debug().Where("short_url = ?", shortUrl).First(&collection)
+
+	if result.Error == nil {
+		return c.JSON(map[string]interface{}{
+			"status": "ok",
+			"result": collection,
+		})
+	}
+	return fiber.ErrNotFound
 }
