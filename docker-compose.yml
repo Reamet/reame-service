@@ -6,6 +6,6 @@ services:
       context: .
       args:
         - PORT=${PORT:-9081}
-    image: seedtopia-admin-api:${TAG:-dev}
+    image: reame-service:${TAG:-dev}
     restart: always
     network_mode: host
