@@ -29,6 +29,7 @@ func SetRouter(app *fiber.App) {
 	reameServiceCollectionGroup.Post("/create", reameServiceCollectionGroupHandler.Create)
 	reameServiceCollectionGroup.Get("/lists", reameServiceCollectionGroupHandler.CollectionLists)
 	reameServiceCollectionGroup.Get("/short_url", reameServiceCollectionGroupHandler.CollectionByShortUrl)
+	reameServiceCollectionGroup.Get("/chain/collection_id_chain", reameServiceCollectionGroupHandler.CollectionByIdChain)
 	reameServiceCollectionGroup.Post("/update/:id", reameServiceCollectionGroupHandler.Update)
 	reameServiceCollectionGroup.Get("/:id", reameServiceCollectionGroupHandler.CollectionById)
 

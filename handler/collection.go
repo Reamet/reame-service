@@ -34,3 +34,7 @@ func (ph *CollectionHandler) CollectionById(c *fiber.Ctx) error {
 func (ph *CollectionHandler) CollectionByShortUrl(c *fiber.Ctx) error {
 	return collection.CollectionByShortUrl(c, ph.DB)
 }
+
+func (ph *CollectionHandler) CollectionByIdChain(c *fiber.Ctx) error {
+	return collection.CollectionByIdChain(c, ph.DB)
+}
