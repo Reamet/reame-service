@@ -14,6 +14,7 @@ import (
 )
 
 type UpdatePayload struct {
+	CollectionIdChain      string `json:"collection_id_chain"`
 	CollectionProfileImage string `json:"collection_profile_image"`
 	CollectionCoverImage   string `json:"collection_cover_image"`
 	Name                   string `json:"name"`
@@ -74,6 +75,7 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 	}
 
 	databasePayload := map[string]interface{}{
+		"collection_id_chain":      bodyPayload.CollectionIdChain,
 		"collection_profile_image": logoProfile,
 		"collection_cover_image":   logoCover,
 		"name":                     bodyPayload.Name,

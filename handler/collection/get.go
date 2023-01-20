@@ -80,3 +80,19 @@ func CollectionByShortUrl(c *fiber.Ctx, db *gorm.DB) error {
 	}
 	return fiber.ErrNotFound
 }
+
+func CollectionByIdChain(c *fiber.Ctx, db *gorm.DB) error {
+	idChain := c.Query("collection_id_chain")
+
+	collection := model.Collection{}
+
+	result := db.Debug().Where("collection_id_chain = ?", idChain).First(&collection)
+
+	if result.Error == nil {
+		return c.JSON(map[string]interface{}{
+			"status": "ok",
+			"result": collection,
+		})
+	}
+	return fiber.ErrNotFound
+}

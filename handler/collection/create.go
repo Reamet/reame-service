@@ -13,6 +13,7 @@ import (
 )
 
 type CreatePayload struct {
+	CollectionIdChain      string `json:"collection_id_chain"`
 	CollectionProfileImage string `json:"collection_profile_image"`
 	CollectionCoverImage   string `json:"collection_cover_image"`
 	Name                   string `json:"name"`
@@ -57,6 +58,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 	}
 
 	collectionDatabasePayload := model.Collection{
+		CollectionIdChain:      bodyPayload.CollectionIdChain,
 		CollectionProfileImage: logoProfile,
 		CollectionCoverImage:   logoCover,
 		Name:                   bodyPayload.Name,

@@ -6,6 +6,7 @@ import (
 
 type Collection struct {
 	ID                     int        `json:"id" gorm:"primaryKey;autoIncrement"`
+	CollectionIdChain      string     `json:"collection_id_chain"`
 	CollectionProfileImage string     `json:"collection_profile_image"`
 	CollectionCoverImage   string     `json:"collection_cover_image"`
 	Name                   string     `json:"name"`
