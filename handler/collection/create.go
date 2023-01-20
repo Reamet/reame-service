@@ -37,21 +37,24 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 	}
 
 	uuidWithHyphen := uuid.New()
-	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
+
+	uuidProfile := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
 
 	var logoProfile = ""
 	if len(bodyPayload.CollectionProfileImage) > 0 {
-		logoOutput, err := upload.AWSUpload(bodyPayload.CollectionProfileImage, fmt.Sprintf("/%s/%s", "collection", uuid))
+		logoOutput, err := upload.AWSUpload(bodyPayload.CollectionProfileImage, fmt.Sprintf("/%s/%s", "collection", uuidProfile))
 		if err == nil {
 			logoProfile = logoOutput.Location
 		}
 	}
 
-	uuid1 := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
+	uuidWithHyphenCover := uuid.New()
+
+	uuidCover := strings.Replace(uuidWithHyphenCover.String(), "-", "", -1)
 
 	var logoCover = ""
 	if len(bodyPayload.CollectionCoverImage) > 0 {
-		logoOutput, err := upload.AWSUpload(bodyPayload.CollectionCoverImage, fmt.Sprintf("/%s/%s", "collection", uuid1))
+		logoOutput, err := upload.AWSUpload(bodyPayload.CollectionCoverImage, fmt.Sprintf("/%s/%s", "collection", uuidCover))
 		if err == nil {
 			logoCover = logoOutput.Location
 		}
