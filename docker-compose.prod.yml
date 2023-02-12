@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  api-prod:
+    build:
+      context: .
+      args:
+        - PORT=${PORT:-9081}
+    image: reame-service:prod
+    restart: always
+    network_mode: host
