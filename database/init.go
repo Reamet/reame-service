@@ -61,4 +61,5 @@ func (dh *DatabaseHandler) InitialPostgresql() {
 func (dh *DatabaseHandler) InitialMigration() {
 	dh.DB.AutoMigrate(&model.Collection{})
 	dh.DB.AutoMigrate(&model.Mint{})
+	dh.DB.AutoMigrate(&model.Launchpad{})
 }

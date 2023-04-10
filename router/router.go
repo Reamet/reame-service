@@ -40,4 +40,13 @@ func SetRouter(app *fiber.App) {
 	reameServiceMintGroup.Post("/update/:id", reameServiceMintGroupHandler.Update)
 	reameServiceMintGroup.Get("/lists", reameServiceMintGroupHandler.MintLists)
 	reameServiceMintGroup.Get("/:id", reameServiceMintGroupHandler.GetMintById)
+
+	reameServiceLaunchpadGroup := api.Group("/launchpad")
+	reameServiceLaunchpadGroupHandler := handler.LaunchpadHandler{}
+	reameServiceLaunchpadGroupHandler.Init(database.Database.DB)
+	reameServiceLaunchpadGroup.Post("/create", reameServiceLaunchpadGroupHandler.Create)
+	reameServiceLaunchpadGroup.Put("/update", reameServiceLaunchpadGroupHandler.Update)
+	reameServiceLaunchpadGroup.Get("/", reameServiceLaunchpadGroupHandler.GetLaunchPadAll)
+	reameServiceLaunchpadGroup.Get("/:id", reameServiceLaunchpadGroupHandler.GetLaunchPadById)
+	reameServiceLaunchpadGroup.Get("/slug/:slug", reameServiceLaunchpadGroupHandler.GetLaunchPadBySlug)
 }
