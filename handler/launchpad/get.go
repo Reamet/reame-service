@@ -1,7 +1,6 @@
 package launchpad
 
 import (
-	"fmt"
 	"net/http"
 	"reame-service/database/model"
 	"strconv"
@@ -33,7 +32,10 @@ func GetLaunchPadAll(c *fiber.Ctx, db *gorm.DB) error {
 	}
 	offset := (page - 1) * pageSize
 
+	var count int64
+
 	result := db.Debug().Offset(offset).Limit(pageSize)
+
 	if len(hot) > 0 {
 		result.Where("hot = ?", hot)
 	}
@@ -43,57 +45,57 @@ func GetLaunchPadAll(c *fiber.Ctx, db *gorm.DB) error {
 	}
 
 	result.Find(&launchpads)
+	result.Offset(-1).Count(&count)
 
 	if result.Error != nil {
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"message": result.Error.Error(),
 		})
 	}
 
-	return c.JSON(fiber.Map{
+	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status":  "ok",
 		"results": launchpads,
+		"total":   count,
 	})
 }
 
 func GetLaunchPadById(c *fiber.Ctx, db *gorm.DB) error {
 	id := c.Params("id")
-	launchpads := model.Launchpad{}
+	launchpad := model.Launchpad{}
 
 	launchpadQuery := strings.TrimSpace(strings.ToLower(id))
-	fmt.Println(launchpadQuery)
 
-	result := db.Debug().Where("id = ?", launchpadQuery).First(&launchpads)
-	fmt.Println(result)
+	result := db.Debug().Where("id = ?", launchpadQuery).First(&launchpad)
 
 	if result.Error != nil {
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"message": result.Error.Error(),
 		})
 	}
 
-	return c.JSON(fiber.Map{
-		"status":  "ok",
-		"results": launchpads,
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": "ok",
+		"result": launchpad,
 	})
 }
 
 func GetLaunchPadBySlug(c *fiber.Ctx, db *gorm.DB) error {
 	slug := c.Params("slug")
-	launchpads := []model.Launchpad{}
+	launchpad := model.Launchpad{}
 
 	launchpadQuery := strings.TrimSpace(slug)
 
-	result := db.Debug().Where("slug = ?", launchpadQuery).First(&launchpads)
+	result := db.Debug().Where("slug = ?", launchpadQuery).First(&launchpad)
 
 	if result.Error != nil {
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"message": result.Error.Error(),
 		})
 	}
 
-	return c.JSON(fiber.Map{
-		"status":  "ok",
-		"results": launchpads,
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": "ok",
+		"result": launchpad,
 	})
 }

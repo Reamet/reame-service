@@ -49,7 +49,7 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 
 	var bannerLocation = ""
 	if len(payload.ImageBanner) > 0 {
-		bannerOutput, err := upload.AWSUpload(payload.ImageBanner, fmt.Sprintf("/%s/%s", "launchpadbanner", strings.ToLower(payload.ID)))
+		bannerOutput, err := upload.AWSUpload(payload.ImageBanner, fmt.Sprintf("/%s/%s", "reamelaunchpadbanner", strings.ToLower(payload.ID)))
 		if err == nil {
 			bannerLocation = bannerOutput.Location
 		}
@@ -57,7 +57,7 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 
 	var featureLocation = ""
 	if len(payload.ImageFeature) > 0 {
-		featureOutput, err := upload.AWSUpload(payload.ImageFeature, fmt.Sprintf("/%s/%s", "launchpadfeature", strings.ToLower(payload.ID)))
+		featureOutput, err := upload.AWSUpload(payload.ImageFeature, fmt.Sprintf("/%s/%s", "reamelaunchpadfeature", strings.ToLower(payload.ID)))
 		if err == nil {
 			featureLocation = featureOutput.Location
 		}
@@ -65,7 +65,7 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 
 	var avatarLocation = ""
 	if len(payload.ImageAvatar) > 0 {
-		avatarOutput, err := upload.AWSUpload(payload.ImageAvatar, fmt.Sprintf("/%s/%s", "launchpadavatar", strings.ToLower(payload.ID)))
+		avatarOutput, err := upload.AWSUpload(payload.ImageAvatar, fmt.Sprintf("/%s/%s", "reamelaunchpadavatar", strings.ToLower(payload.ID)))
 		if err == nil {
 			avatarLocation = avatarOutput.Location
 		}
@@ -89,7 +89,7 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 		Discord:          payload.Discord,
 		TermAndCondition: payload.TermAndCondition,
 		Status:           payload.Status,
-		UpdateBy:         "updatebByDew",
+		UpdateBy:         payload.CreatedBy,
 		UpdatedAt:        time.Now(),
 	}
 
