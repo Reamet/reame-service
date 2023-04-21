@@ -15,6 +15,8 @@ func GetLaunchPadAll(c *fiber.Ctx, db *gorm.DB) error {
 	pageSizeQuery := c.Query("page_size", "10")
 	hot := c.Query("hot")
 	status := c.Query("status")
+	saleStatus := c.Query("salestatus")
+	saleType := c.Query("saletype")
 
 	launchpads := []model.Launchpad{}
 
@@ -42,6 +44,14 @@ func GetLaunchPadAll(c *fiber.Ctx, db *gorm.DB) error {
 
 	if len(status) > 0 {
 		result.Where("status = ?", status)
+	}
+
+	if len(saleStatus) > 0 {
+		result.Where("sale_status = ?", saleStatus)
+	}
+
+	if len(saleType) > 0 {
+		result.Where("sale_type = ?", saleType)
 	}
 
 	result.Find(&launchpads)
