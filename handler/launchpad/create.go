@@ -21,7 +21,7 @@ type CreatePayload struct {
 	ImageAvatar      string    `json:"imageAvatar"`
 	ChainName        string    `json:"chainName"`
 	LaunchpadAddress string    `json:"launchpadAddress"`
-	Hot              bool      `json:"hot"`
+	Hot              *bool     `json:"hot"`
 	Slug             string    `json:"slug"`
 	Instragram       string    `json:"instragram"`
 	Twitter          string    `json:"twitter"`
@@ -30,15 +30,18 @@ type CreatePayload struct {
 	Discord          string    `json:"discord"`
 	CreatedBy        string    `json:"createdBy"`
 	UpdateBy         string    `json:"updateBy"`
-	Active           string    `json:"active"`
+	Active           *bool     `json:"active"`
 	TermAndCondition string    `json:"termAndCondition"`
 	Status           string    `json:"status"`
+	SaleStatus       string    `json:"saleStatus"`
+	SaleType         string    `json:"saleType"`
+	StartDate        time.Time `json:"startDate,omitempty"`
+	EndDate          time.Time `json:"endDate,omitempty"`
 	CreatedAt        time.Time `json:"createdAt,omitempty"`
 	UpdatedAt        time.Time `json:"updatedAt,omitempty"`
 }
 
 func Create(c *fiber.Ctx, db *gorm.DB) error {
-	// userAddress := c.Locals("address").(string)
 	payload := CreatePayload{}
 
 	if err := c.BodyParser(&payload); err != nil {
@@ -90,6 +93,10 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		Active:           payload.Active,
 		TermAndCondition: payload.TermAndCondition,
 		Status:           payload.Status,
+		SaleStatus:       payload.SaleStatus,
+		SaleType:         payload.SaleType,
+		StartDate:        payload.StartDate,
+		EndDate:          payload.EndDate,
 		CreatedBy:        payload.CreatedBy,
 		CreatedAt:        time.Now(),
 		UpdatedAt:        time.Now(),

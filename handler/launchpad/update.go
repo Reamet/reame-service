@@ -21,24 +21,26 @@ type UpdatePayload struct {
 	ImageAvatar      string    `json:"imageAvatar"`
 	ChainName        string    `json:"chainName"`
 	LaunchpadAddress string    `json:"launchpadAddress"`
-	Hot              bool      `json:"hot"`
+	Hot              *bool     `json:"hot"`
 	Slug             string    `json:"slug"`
 	Instragram       string    `json:"instragram"`
 	Twitter          string    `json:"twitter"`
 	Facebook         string    `json:"facebook"`
 	Telegram         string    `json:"telegram"`
 	Discord          string    `json:"discord"`
-	CreatedBy        string    `json:"createdBy"`
 	UpdateBy         string    `json:"updateBy"`
-	Active           string    `json:"active"`
+	Active           *bool     `json:"active"`
 	TermAndCondition string    `json:"termAndCondition"`
 	Status           string    `json:"status"`
+	SaleStatus       string    `json:"saleStatus"`
+	SaleType         string    `json:"saleType"`
+	StartDate        time.Time `json:"startDate,omitempty"`
+	EndDate          time.Time `json:"endDate,omitempty"`
 	CreatedAt        time.Time `json:"createdAt,omitempty"`
 	UpdatedAt        time.Time `json:"updatedAt,omitempty"`
 }
 
 func Update(c *fiber.Ctx, db *gorm.DB) error {
-	// userAddress := c.Locals("address").(string)
 	payload := UpdatePayload{}
 
 	if err := c.BodyParser(&payload); err != nil {
@@ -77,19 +79,23 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 		ImageBanner:      bannerLocation,
 		ImageFeature:     featureLocation,
 		ImageAvatar:      avatarLocation,
-		Slug:             strings.ToLower(payload.Slug),
+		ChainName:        payload.ChainName,
 		LaunchpadAddress: payload.LaunchpadAddress,
 		Hot:              payload.Hot,
+		Slug:             strings.ToLower(payload.Slug),
 		Facebook:         payload.Facebook,
 		Instragram:       payload.Instragram,
-		ChainName:        payload.ChainName,
 		Telegram:         payload.Telegram,
 		Twitter:          payload.Twitter,
-		Active:           payload.Active,
 		Discord:          payload.Discord,
+		Active:           payload.Active,
 		TermAndCondition: payload.TermAndCondition,
 		Status:           payload.Status,
-		UpdateBy:         payload.CreatedBy,
+		SaleStatus:       payload.SaleStatus,
+		SaleType:         payload.SaleType,
+		StartDate:        payload.StartDate,
+		EndDate:          payload.EndDate,
+		UpdateBy:         payload.UpdateBy,
 		UpdatedAt:        time.Now(),
 	}
 
