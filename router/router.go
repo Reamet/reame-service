@@ -11,10 +11,6 @@ import (
 
 const VERSION = "v1"
 
-type socketMessage struct {
-	Title string `json:"title"`
-}
-
 func SetRouter(app *fiber.App) {
 	version := app.Group("/" + VERSION)
 	api := version.Group("/", logger.New())
@@ -49,4 +45,14 @@ func SetRouter(app *fiber.App) {
 	reameServiceLaunchpadGroup.Get("/", reameServiceLaunchpadGroupHandler.GetLaunchPadAll)
 	reameServiceLaunchpadGroup.Get("/:id", reameServiceLaunchpadGroupHandler.GetLaunchPadById)
 	reameServiceLaunchpadGroup.Get("/slug/:slug", reameServiceLaunchpadGroupHandler.GetLaunchPadBySlug)
+
+	reameHomeGroup := api.Group("/home")
+	reameHomeGroupHandler := handler.HomeHandler{
+		DB: database.Database.DB,
+	}
+	reameHomeGroupHandler.Init(database.Database.DB)
+	reameHomeGroup.Post("/create", reameHomeGroupHandler.Create)
+	reameHomeGroup.Put("/update/:id", reameHomeGroupHandler.Update)
+	reameHomeGroup.Get("/", reameHomeGroupHandler.GetAllHome)
+	reameHomeGroup.Get("/:id", reameHomeGroupHandler.GetHomeById)
 }
