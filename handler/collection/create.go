@@ -2,8 +2,10 @@ package collection
 
 import (
 	"fmt"
+	"net/http"
 	"reame-service/database/model"
 	"reame-service/handler/upload"
+	"strconv"
 	"strings"
 	"time"
 
@@ -82,6 +84,132 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 
 	if err != nil {
 		return err
+	}
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+	})
+}
+
+type CreateTrendingPayload struct {
+	Ids string `json:"ids"`
+}
+
+func CreateTrendingCollection(c *fiber.Ctx, db *gorm.DB) error {
+	bodyPayload := CreateTrendingPayload{}
+	currentTime := time.Now()
+
+	if err := c.BodyParser(&bodyPayload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	databasePayload := model.TrendingCollection{
+		Ids:       bodyPayload.Ids,
+		CreatedAt: currentTime,
+		UpdatedAt: currentTime,
+	}
+
+	if err := db.Create(&databasePayload).Error; err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+	})
+}
+
+func UpdateTrendingCollection(c *fiber.Ctx, db *gorm.DB) error {
+	bodyPayload := CreateTrendingPayload{}
+	currentTime := time.Now()
+
+	id, errorId := strconv.Atoi(c.Params("id"))
+
+	if errorId != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": errorId.Error(),
+		})
+	}
+
+	if err := c.BodyParser(&bodyPayload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	databasePayload := model.TrendingCollection{
+		Ids:       bodyPayload.Ids,
+		UpdatedAt: currentTime,
+	}
+
+	if err := db.Where("id = ?", id).Updates(&databasePayload).Error; err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+	})
+}
+
+func CreateFeaturedCollection(c *fiber.Ctx, db *gorm.DB) error {
+	bodyPayload := CreateTrendingPayload{}
+	currentTime := time.Now()
+
+	if err := c.BodyParser(&bodyPayload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	databasePayload := model.FeaturedCollection{
+		Ids:       bodyPayload.Ids,
+		CreatedAt: currentTime,
+		UpdatedAt: currentTime,
+	}
+
+	if err := db.Create(&databasePayload).Error; err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"status": "ok",
+	})
+}
+
+func UpdateFeaturedCollection(c *fiber.Ctx, db *gorm.DB) error {
+	bodyPayload := CreateTrendingPayload{}
+	currentTime := time.Now()
+
+	id, errorId := strconv.Atoi(c.Params("id"))
+
+	if errorId != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": errorId.Error(),
+		})
+	}
+
+	if err := c.BodyParser(&bodyPayload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	databasePayload := model.FeaturedCollection{
+		Ids:       bodyPayload.Ids,
+		UpdatedAt: currentTime,
+	}
+
+	if err := db.Where("id = ?", id).Updates(&databasePayload).Error; err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
 	}
 
 	return c.JSON(fiber.Map{
