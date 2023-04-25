@@ -141,7 +141,7 @@ func (ph *HomeHandler) GetHomeById(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(fiber.Map{
+	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "ok",
 		"result": home,
 	})
@@ -178,7 +178,7 @@ func (ph *HomeHandler) GetAllHome(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(fiber.Map{
+	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status":  "ok",
 		"results": home,
 		"total":   count,

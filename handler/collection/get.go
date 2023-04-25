@@ -1,6 +1,7 @@
 package collection
 
 import (
+	"net/http"
 	"reame-service/database/model"
 	"strconv"
 
@@ -95,4 +96,40 @@ func CollectionByIdChain(c *fiber.Ctx, db *gorm.DB) error {
 		})
 	}
 	return fiber.ErrNotFound
+}
+
+func GetAllTrendingCollection(c *fiber.Ctx, db *gorm.DB) error {
+
+	collection := model.TrendingCollection{}
+
+	result := db.Debug().First(&collection)
+
+	if result.Error != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"message": result.Error.Error(),
+		})
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": "ok",
+		"result": collection,
+	})
+}
+
+func GetAllFeaturedCollection(c *fiber.Ctx, db *gorm.DB) error {
+
+	collection := model.FeaturedCollection{}
+
+	result := db.Debug().First(&collection)
+
+	if result.Error != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"message": result.Error.Error(),
+		})
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": "ok",
+		"result": collection,
+	})
 }
