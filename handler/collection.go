@@ -38,3 +38,27 @@ func (ph *CollectionHandler) CollectionByShortUrl(c *fiber.Ctx) error {
 func (ph *CollectionHandler) CollectionByIdChain(c *fiber.Ctx) error {
 	return collection.CollectionByIdChain(c, ph.DB)
 }
+
+func (ph *CollectionHandler) CreateTrendingCollection(c *fiber.Ctx) error {
+	return collection.CreateTrendingCollection(c, ph.DB)
+}
+
+func (ph *CollectionHandler) UpdateTrendingCollection(c *fiber.Ctx) error {
+	return collection.UpdateTrendingCollection(c, ph.DB)
+}
+
+func (ph *CollectionHandler) GetAllTrendingCollection(c *fiber.Ctx) error {
+	return collection.GetAllTrendingCollection(c, ph.DB)
+}
+
+func (ph *CollectionHandler) CreateFeaturedCollection(c *fiber.Ctx) error {
+	return collection.CreateFeaturedCollection(c, ph.DB)
+}
+
+func (ph *CollectionHandler) UpdateFeaturedCollection(c *fiber.Ctx) error {
+	return collection.UpdateFeaturedCollection(c, ph.DB)
+}
+
+func (ph *CollectionHandler) GetAllFeaturedCollection(c *fiber.Ctx) error {
+	return collection.GetAllFeaturedCollection(c, ph.DB)
+}

@@ -27,6 +27,12 @@ func SetRouter(app *fiber.App) {
 	reameServiceCollectionGroup.Get("/short_url", reameServiceCollectionGroupHandler.CollectionByShortUrl)
 	reameServiceCollectionGroup.Get("/chain/collection_id_chain", reameServiceCollectionGroupHandler.CollectionByIdChain)
 	reameServiceCollectionGroup.Post("/update/:id", reameServiceCollectionGroupHandler.Update)
+	reameServiceCollectionGroup.Get("/trending", reameServiceCollectionGroupHandler.GetAllTrendingCollection)
+	reameServiceCollectionGroup.Post("/trending/create", reameServiceCollectionGroupHandler.CreateTrendingCollection)
+	reameServiceCollectionGroup.Put("/trending/update/:id", reameServiceCollectionGroupHandler.UpdateTrendingCollection)
+	reameServiceCollectionGroup.Get("/featured", reameServiceCollectionGroupHandler.GetAllFeaturedCollection)
+	reameServiceCollectionGroup.Post("/featured/create", reameServiceCollectionGroupHandler.CreateFeaturedCollection)
+	reameServiceCollectionGroup.Put("/featured/update/:id", reameServiceCollectionGroupHandler.UpdateFeaturedCollection)
 	reameServiceCollectionGroup.Get("/:id", reameServiceCollectionGroupHandler.CollectionById)
 
 	reameServiceMintGroup := api.Group("/mint")

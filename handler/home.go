@@ -24,10 +24,10 @@ func (ph *HomeHandler) Init(db *gorm.DB) {
 
 type CreateHomePayload struct {
 	Title       string `json:"title"`
-	Subtitle    string `json:"Subtitle"`
-	ImageBanner string `json:"imageBanner"`
-	ButtonTitle string `json:"buttonTitle"`
-	NftIds      string `json:"nftIds"`
+	Subtitle    string `json:"subtitle"`
+	ImageBanner string `json:"image_banner"`
+	ButtonTitle string `json:"button_title"`
+	NftIds      string `json:"nft_ids"`
 }
 
 func (ph *HomeHandler) Create(c *fiber.Ctx) error {
