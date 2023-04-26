@@ -56,4 +56,25 @@ func SetRouter(app *fiber.App) {
 	excollection.Post("/", excollectionHandler.PostCreateNewCollectionDetail)
 	excollection.Put("/", excollectionHandler.PutUpdateCollectionDetail)
 
+	// owner route group
+	ownerHandler := handler.OwnerHandler{
+		DB: database.Database.DB,
+	}
+	owner := api.Group("/owner")
+	owner.Get("/", ownerHandler.GetOwnerAll)
+	owner.Get("/:ownerId", ownerHandler.GetOwnerById)
+	owner.Post("/", ownerHandler.CreateOwner)
+	owner.Put("/:ownerId", ownerHandler.UpdateOwner)
+
+	// owner route group
+	branchHandler := handler.BranchHandler{
+		DB: database.Database.DB,
+	}
+	branch := api.Group("/branch")
+	branch.Get("/", branchHandler.GetBranchAll)
+	branch.Get("/:branchId", branchHandler.GetBranchById)
+	branch.Get("/owner/:ownerId", branchHandler.GetBranchByOwnerId)
+	branch.Post("/", branchHandler.CreateBranch)
+	branch.Put("/:branchId", branchHandler.UpdateBranch)
+
 }
