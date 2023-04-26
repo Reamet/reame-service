@@ -1,0 +1,41 @@
+name: (Main) Reame Service
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: [ self-hosted ]
+
+    steps:
+      - uses: actions/checkout@v2
+        # with:
+        #   clean: false
+
+      - name: Init env file
+        run: |
+          echo "DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_SCHEMA_NAME=${{ secrets.DB_SCHEMA_NAME_PROD }}
+          PORT=${{ secrets.PORT_PROD }}
+          AWS_S3_ACCESS_KEY=${{ secrets.AWS_S3_ACCESS_KEY }}
+          AWS_S3_SECRET_KEY=${{ secrets.AWS_S3_SECRET_KEY }}
+          AWS_S3_REGION=${{ secrets.AWS_S3_REGION }}
+          AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET_PROD }}
+          AWS_S3_BUCKET_ENDPOINT=${{ secrets.AWS_S3_BUCKET_ENDPOINT }}" > .env
+
+      - name: Build Docker image
+        env:
+          PORT: ${{ secrets.PORT_PROD }}
+          TAG: prod
+        run: docker-compose -f docker-compose.prod.yml build
+
+      - name: Start Docker
+        env:
+          PORT: ${{ secrets.PORT_PROD }}
+          TAG: prod
+        run: docker-compose -f docker-compose.prod.yml up -d
