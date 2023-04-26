@@ -49,7 +49,7 @@ func SetRouter(app *fiber.App) {
 	excollectionHandler := handler.CollectionHandler{
 		DB: database.Database.DB,
 	}
-	excollection := api.Group("/excollection")
+	excollection := api.Group("/collection")
 	excollection.Get("/", excollectionHandler.GetCollections)
 	excollection.Get("/:ref", excollectionHandler.GetCollectionSingleDetail)
 	excollection.Get("/exist", excollectionHandler.GetIsExist)
