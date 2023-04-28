@@ -14,7 +14,7 @@ type Collection struct {
 	ImageAvatar       string    `json:"image_avatar"`
 	TokenType         *string   `json:"token_type"`
 	Hot               *bool     `json:"hot"`
-	OwnerId           *int      `json:"owner_id"`
+	OwnerId           int       `json:"owner_id"`
 	BranchId          *int      `json:"branch_id"`
 	Slug              string    `json:"slug" gorm:"unique;type:varchar(255)"`
 	Instragram        string    `json:"instragram" gorm:"type:varchar(255)"`
@@ -27,7 +27,7 @@ type Collection struct {
 	Active            string    `json:"active"`
 	TermAndCondition  string    `json:"term_and_condition"`
 	Status            string    `json:"status"`
-	Owner             *Owner    `json:"owner" gorm:"foreignkey:OwnerId"`
+	Owner             Owner     `json:"owner" gorm:"foreignkey:OwnerId"`
 	CreatedAt         time.Time `json:"created_at,omitempty"`
 	UpdatedAt         time.Time `json:"updated_at,omitempty"`
 }

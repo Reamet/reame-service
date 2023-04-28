@@ -53,8 +53,8 @@ func SetRouter(app *fiber.App) {
 	excollection.Get("/", excollectionHandler.GetCollections)
 	excollection.Get("/:ref", excollectionHandler.GetCollectionSingleDetail)
 	excollection.Get("/exist", excollectionHandler.GetIsExist)
-	excollection.Post("/", excollectionHandler.PostCreateNewCollectionDetail)
-	excollection.Put("/", excollectionHandler.PutUpdateCollectionDetail)
+	excollection.Post("/create", excollectionHandler.PostCreateNewCollectionDetail)
+	excollection.Put("/update/:id", excollectionHandler.PutUpdateCollectionDetail)
 
 	// owner route group
 	ownerHandler := handler.OwnerHandler{

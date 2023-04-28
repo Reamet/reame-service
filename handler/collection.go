@@ -47,7 +47,7 @@ func (ph *CollectionHandler) Init(db *gorm.DB) {
 }
 
 func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
-	userAddress := c.Locals("address").(string)
+	// userAddress := c.Locals("address").(string)
 	payload := PayloadData{}
 
 	if err := c.BodyParser(&payload); err != nil {
@@ -88,7 +88,7 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 		ImageBanner:       bannerLocation,
 		ImageFeature:      &featureLocation,
 		ImageAvatar:       avatarLocation,
-		OwnerId:           &payload.OwnerId,
+		OwnerId:           payload.OwnerId,
 		BranchId:          &payload.BranchId,
 		TokenType:         &payload.TokenType,
 		Slug:              strings.ToLower(payload.Slug),
@@ -100,7 +100,7 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 		Active:            payload.Active,
 		TermAndCondition:  payload.TermAndCondition,
 		Status:            payload.Status,
-		CreatedBy:         userAddress,
+		CreatedBy:         "0xfc9747f1fcf83ef9782cb888882941c9559c462e",
 		CreatedAt:         time.Now(),
 		UpdatedAt:         time.Now(),
 	}
@@ -117,8 +117,8 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 }
 
 func (ph *CollectionHandler) PutUpdateCollectionDetail(c *fiber.Ctx) error {
-	userAddress := c.Locals("address").(string)
 	payload := PayloadData{}
+	id := c.Params("id")
 
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -156,7 +156,7 @@ func (ph *CollectionHandler) PutUpdateCollectionDetail(c *fiber.Ctx) error {
 		ImageBanner:      bannerLocation,
 		ImageFeature:     &featureLocation,
 		ImageAvatar:      avatarLocation,
-		OwnerId:          &payload.OwnerId,
+		OwnerId:          payload.OwnerId,
 		BranchId:         &payload.BranchId,
 		TokenType:        &payload.TokenType,
 		Slug:             strings.ToLower(payload.Slug),
@@ -168,11 +168,10 @@ func (ph *CollectionHandler) PutUpdateCollectionDetail(c *fiber.Ctx) error {
 		Active:           payload.Active,
 		TermAndCondition: payload.TermAndCondition,
 		Status:           payload.Status,
-		CreatedBy:        userAddress,
 		UpdatedAt:        time.Now(),
 	}
 
-	err := ph.DB.Model(&model.Collection{}).Where("ID = ?", strings.ToLower(payload.ID)).Updates(&collection).Error
+	err := ph.DB.Model(&model.Collection{}).Where("ID = ?", strings.ToLower(id)).Updates(&collection).Error
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"message": err.Error(),
