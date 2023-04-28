@@ -36,6 +36,7 @@ type PayloadData struct {
 	Active            string `json:"active"`
 	Telegram          string `json:"telegram"`
 	Discord           string `json:"discord"`
+	Website           string `json:"website"`
 	Twitter           string `json:"twitter"`
 	TokenType         string `json:"token_type"`
 	TermAndCondition  string `json:"term_and_condition"`
@@ -97,6 +98,7 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 		Telegram:          payload.Telegram,
 		Twitter:           payload.Twitter,
 		Discord:           payload.Discord,
+		Website:           payload.Website,
 		Active:            payload.Active,
 		TermAndCondition:  payload.TermAndCondition,
 		Status:            payload.Status,
@@ -165,6 +167,7 @@ func (ph *CollectionHandler) PutUpdateCollectionDetail(c *fiber.Ctx) error {
 		Telegram:         payload.Telegram,
 		Twitter:          payload.Twitter,
 		Discord:          payload.Discord,
+		Website:          payload.Website,
 		Active:           payload.Active,
 		TermAndCondition: payload.TermAndCondition,
 		Status:           payload.Status,

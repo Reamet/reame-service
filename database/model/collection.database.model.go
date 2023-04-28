@@ -18,6 +18,7 @@ type Collection struct {
 	BranchId          *int      `json:"branch_id"`
 	Slug              string    `json:"slug" gorm:"unique;type:varchar(255)"`
 	Instragram        string    `json:"instragram" gorm:"type:varchar(255)"`
+	Website           string    `json:"website" gorm:"type:varchar(255)"`
 	Twitter           string    `json:"twitter" gorm:"type:varchar(255)"`
 	Facebook          string    `json:"facebook" gorm:"type:varchar(255)"`
 	Telegram          string    `json:"telegram" gorm:"type:varchar(255)"`
