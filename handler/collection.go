@@ -41,6 +41,7 @@ type PayloadData struct {
 	TokenType         string `json:"token_type"`
 	TermAndCondition  string `json:"term_and_condition"`
 	Status            string `json:"status"`
+	CreatedType       string `json:"created_type"`
 }
 
 func (ph *CollectionHandler) Init(db *gorm.DB) {
@@ -102,6 +103,7 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 		Active:            payload.Active,
 		TermAndCondition:  payload.TermAndCondition,
 		Status:            payload.Status,
+		CreatedType:       payload.CreatedType,
 		CreatedBy:         "0xfc9747f1fcf83ef9782cb888882941c9559c462e",
 		CreatedAt:         time.Now(),
 		UpdatedAt:         time.Now(),

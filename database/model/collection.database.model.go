@@ -27,6 +27,7 @@ type Collection struct {
 	UpdateBy          string    `json:"update_by" gorm:"type:varchar(42)"`
 	Active            string    `json:"active"`
 	TermAndCondition  string    `json:"term_and_condition"`
+	CreatedType       string    `json:"created_type"`
 	Status            string    `json:"status"`
 	CreatedAt         time.Time `json:"created_at,omitempty"`
 	UpdatedAt         time.Time `json:"updated_at,omitempty"`
