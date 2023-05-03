@@ -268,9 +268,9 @@ func (ph *CollectionHandler) GetCollectionSingleDetail(c *fiber.Ctx) error {
 	var err error
 	re := regexp.MustCompile("^0x[0-9a-fA-F]{40}$")
 	if re.MatchString(collectionQuery) {
-		err = db.Preload("Owner").First(&collection, "id = ?", collectionQuery).Error
+		err = db.First(&collection, "id = ?", collectionQuery).Error
 	} else {
-		err = db.Preload("Owner").First(&collection, "slug = ?", collectionQuery).Error
+		err = db.First(&collection, "slug = ?", collectionQuery).Error
 	}
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
