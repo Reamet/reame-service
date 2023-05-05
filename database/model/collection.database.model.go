@@ -9,7 +9,7 @@ type Collection struct {
 	CollectionIdChain *string   `json:"collection_id_chain"`
 	Title             string    `json:"title" gorm:"type:varchar(255);index"`
 	Description       string    `json:"description"`
-	ImageBanner       string    `json:"imageBanner"`
+	ImageBanner       string    `json:"image_banner"`
 	ImageFeature      *string   `json:"image_feature"`
 	ImageAvatar       string    `json:"image_avatar"`
 	TokenType         *string   `json:"token_type"`

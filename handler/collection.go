@@ -42,6 +42,7 @@ type PayloadData struct {
 	TermAndCondition  string `json:"term_and_condition"`
 	Status            string `json:"status"`
 	CreatedType       string `json:"created_type"`
+	CreatedBy         string `json:"created_by"`
 }
 
 func (ph *CollectionHandler) Init(db *gorm.DB) {
@@ -103,6 +104,7 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 		TermAndCondition:  payload.TermAndCondition,
 		Status:            payload.Status,
 		CreatedType:       payload.CreatedType,
+		CreatedBy:         payload.CreatedBy,
 		CreatedAt:         time.Now(),
 		UpdatedAt:         time.Now(),
 	}
@@ -219,6 +221,7 @@ func (ch *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 	pageQuery := c.Query("page", "1")
 	pageSizeQuery := c.Query("page_size", "10")
 	active := c.Query("active")
+	createby := c.Query("createby")
 
 	collections := []model.Collection{}
 
@@ -240,6 +243,9 @@ func (ch *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 
 	if len(active) > 0 {
 		result.Where("active = ?", active)
+	}
+	if len(createby) > 0 {
+		result.Where("created_by = ?", createby)
 	}
 
 	result.Find(&collections)
