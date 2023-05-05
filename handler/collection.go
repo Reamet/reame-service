@@ -49,7 +49,6 @@ func (ph *CollectionHandler) Init(db *gorm.DB) {
 }
 
 func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
-	// userAddress := c.Locals("address").(string)
 	payload := PayloadData{}
 
 	if err := c.BodyParser(&payload); err != nil {
@@ -84,7 +83,7 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 
 	collection := model.Collection{
 		ID:                strings.ToLower(payload.ID),
-		CollectionIdChain: &payload.ID,
+		CollectionIdChain: &payload.CollectionIdChain,
 		Title:             payload.Title,
 		Description:       payload.Description,
 		ImageBanner:       bannerLocation,
@@ -104,7 +103,6 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 		TermAndCondition:  payload.TermAndCondition,
 		Status:            payload.Status,
 		CreatedType:       payload.CreatedType,
-		CreatedBy:         "0xfc9747f1fcf83ef9782cb888882941c9559c462e",
 		CreatedAt:         time.Now(),
 		UpdatedAt:         time.Now(),
 	}
@@ -155,25 +153,26 @@ func (ph *CollectionHandler) PutUpdateCollectionDetail(c *fiber.Ctx) error {
 	}
 
 	collection := model.Collection{
-		Title:            payload.Title,
-		Description:      payload.Description,
-		ImageBanner:      bannerLocation,
-		ImageFeature:     &featureLocation,
-		ImageAvatar:      avatarLocation,
-		OwnerId:          &payload.OwnerId,
-		BranchId:         &payload.BranchId,
-		TokenType:        &payload.TokenType,
-		Slug:             strings.ToLower(payload.Slug),
-		Facebook:         payload.Facebook,
-		Instragram:       payload.Instragram,
-		Telegram:         payload.Telegram,
-		Twitter:          payload.Twitter,
-		Discord:          payload.Discord,
-		Website:          payload.Website,
-		Active:           payload.Active,
-		TermAndCondition: payload.TermAndCondition,
-		Status:           payload.Status,
-		UpdatedAt:        time.Now(),
+		Title:             payload.Title,
+		Description:       payload.Description,
+		CollectionIdChain: &payload.CollectionIdChain,
+		ImageBanner:       bannerLocation,
+		ImageFeature:      &featureLocation,
+		ImageAvatar:       avatarLocation,
+		OwnerId:           &payload.OwnerId,
+		BranchId:          &payload.BranchId,
+		TokenType:         &payload.TokenType,
+		Slug:              strings.ToLower(payload.Slug),
+		Facebook:          payload.Facebook,
+		Instragram:        payload.Instragram,
+		Telegram:          payload.Telegram,
+		Twitter:           payload.Twitter,
+		Discord:           payload.Discord,
+		Website:           payload.Website,
+		Active:            payload.Active,
+		TermAndCondition:  payload.TermAndCondition,
+		Status:            payload.Status,
+		UpdatedAt:         time.Now(),
 	}
 
 	err := ph.DB.Model(&model.Collection{}).Where("ID = ?", strings.ToLower(id)).Updates(&collection).Error
