@@ -19,22 +19,6 @@ func SetRouter(app *fiber.App) {
 		return c.JSON(fiber.Map{"message": fmt.Sprintf("Hello! This is Seedtopia RESTful API. 👏 %s", VERSION)})
 	})
 
-	reameServiceCollectionGroup := api.Group("/collection")
-	reameServiceCollectionGroupHandler := handler.CollectionHandler{}
-	reameServiceCollectionGroupHandler.Init(database.Database.DB)
-	reameServiceCollectionGroup.Post("/create", reameServiceCollectionGroupHandler.Create)
-	reameServiceCollectionGroup.Get("/lists", reameServiceCollectionGroupHandler.CollectionLists)
-	reameServiceCollectionGroup.Get("/short_url", reameServiceCollectionGroupHandler.CollectionByShortUrl)
-	reameServiceCollectionGroup.Get("/chain/collection_id_chain", reameServiceCollectionGroupHandler.CollectionByIdChain)
-	reameServiceCollectionGroup.Post("/update/:id", reameServiceCollectionGroupHandler.Update)
-	reameServiceCollectionGroup.Get("/trending", reameServiceCollectionGroupHandler.GetAllTrendingCollection)
-	reameServiceCollectionGroup.Post("/trending/create", reameServiceCollectionGroupHandler.CreateTrendingCollection)
-	reameServiceCollectionGroup.Put("/trending/update/:id", reameServiceCollectionGroupHandler.UpdateTrendingCollection)
-	reameServiceCollectionGroup.Get("/featured", reameServiceCollectionGroupHandler.GetAllFeaturedCollection)
-	reameServiceCollectionGroup.Post("/featured/create", reameServiceCollectionGroupHandler.CreateFeaturedCollection)
-	reameServiceCollectionGroup.Put("/featured/update/:id", reameServiceCollectionGroupHandler.UpdateFeaturedCollection)
-	reameServiceCollectionGroup.Get("/:id", reameServiceCollectionGroupHandler.CollectionById)
-
 	reameServiceMintGroup := api.Group("/mint")
 	reameServiceMintGroupHandler := handler.MintHandler{}
 	reameServiceMintGroupHandler.Init(database.Database.DB)
@@ -61,4 +45,36 @@ func SetRouter(app *fiber.App) {
 	reameHomeGroup.Put("/update/:id", reameHomeGroupHandler.Update)
 	reameHomeGroup.Get("/", reameHomeGroupHandler.GetAllHome)
 	reameHomeGroup.Get("/:id", reameHomeGroupHandler.GetHomeById)
+
+	excollectionHandler := handler.CollectionHandler{
+		DB: database.Database.DB,
+	}
+	excollection := api.Group("/collection")
+	excollection.Get("/lists", excollectionHandler.GetCollections)
+	excollection.Get("/:ref", excollectionHandler.GetCollectionSingleDetail)
+	excollection.Get("/exist", excollectionHandler.GetIsExist)
+	excollection.Post("/create", excollectionHandler.PostCreateNewCollectionDetail)
+	excollection.Put("/update/:id", excollectionHandler.PutUpdateCollectionDetail)
+
+	// owner route group
+	ownerHandler := handler.OwnerHandler{
+		DB: database.Database.DB,
+	}
+	owner := api.Group("/owner")
+	owner.Get("/", ownerHandler.GetOwnerAll)
+	owner.Get("/:ownerId", ownerHandler.GetOwnerById)
+	owner.Post("/", ownerHandler.CreateOwner)
+	owner.Put("/:ownerId", ownerHandler.UpdateOwner)
+
+	// owner route group
+	branchHandler := handler.BranchHandler{
+		DB: database.Database.DB,
+	}
+	branch := api.Group("/branch")
+	branch.Get("/", branchHandler.GetBranchAll)
+	branch.Get("/:branchId", branchHandler.GetBranchById)
+	branch.Get("/owner/:ownerId", branchHandler.GetBranchByOwnerId)
+	branch.Post("/", branchHandler.CreateBranch)
+	branch.Put("/:branchId", branchHandler.UpdateBranch)
+
 }

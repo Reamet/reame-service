@@ -64,5 +64,5 @@ func (dh *DatabaseHandler) InitialMigration() {
 	dh.DB.AutoMigrate(&model.Launchpad{})
 	dh.DB.AutoMigrate(&model.Home{})
 	dh.DB.AutoMigrate(&model.TrendingCollection{})
-	dh.DB.AutoMigrate(&model.FeaturedCollection{})
+	dh.DB.AutoMigrate(&model.FeaturedCollection{}, &model.Branch{}, &model.Owner{})
 }

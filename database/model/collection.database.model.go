@@ -5,21 +5,30 @@ import (
 )
 
 type Collection struct {
-	ID                     int        `json:"id" gorm:"primaryKey;autoIncrement"`
-	CollectionIdChain      string     `json:"collection_id_chain"`
-	CollectionProfileImage string     `json:"collection_profile_image"`
-	CollectionCoverImage   string     `json:"collection_cover_image"`
-	Name                   string     `json:"name"`
-	Description            string     `json:"description"`
-	ShortUrl               string     `json:"short_url"`
-	Address                string     `json:"address"`
-	Website                string     `json:"website"`
-	Facebook               string     `json:"facebook"`
-	Twitter                string     `json:"twitter"`
-	Discord                string     `json:"discord"`
-	Telegram               string     `json:"telegram"`
-	Medium                 string     `json:"medium"`
-	CreatedAt              time.Time  `json:"created_at"`
-	UpdatedAt              time.Time  `json:"updated_at"`
-	DeletedAt              *time.Time `json:"deleted_at"`
+	ID                string    `json:"id" gorm:"type:varchar(42);primary_key"`
+	CollectionIdChain *string   `json:"collection_id_chain"`
+	Title             string    `json:"title" gorm:"type:varchar(255);index"`
+	Description       string    `json:"description"`
+	ImageBanner       string    `json:"imageBanner"`
+	ImageFeature      *string   `json:"image_feature"`
+	ImageAvatar       string    `json:"image_avatar"`
+	TokenType         *string   `json:"token_type"`
+	Hot               *bool     `json:"hot"`
+	OwnerId           *int      `json:"owner_id"`
+	BranchId          *int      `json:"branch_id"`
+	Slug              string    `json:"slug" gorm:"unique;type:varchar(255)"`
+	Instragram        string    `json:"instragram" gorm:"type:varchar(255)"`
+	Website           string    `json:"website" gorm:"type:varchar(255)"`
+	Twitter           string    `json:"twitter" gorm:"type:varchar(255)"`
+	Facebook          string    `json:"facebook" gorm:"type:varchar(255)"`
+	Telegram          string    `json:"telegram" gorm:"type:varchar(255)"`
+	Discord           string    `json:"discord" gorm:"type:varchar(255)"`
+	CreatedBy         string    `json:"created_by" gorm:"type:varchar(42)"`
+	UpdateBy          string    `json:"update_by" gorm:"type:varchar(42)"`
+	Active            string    `json:"active"`
+	TermAndCondition  string    `json:"term_and_condition"`
+	CreatedType       string    `json:"created_type"`
+	Status            string    `json:"status"`
+	CreatedAt         time.Time `json:"created_at,omitempty"`
+	UpdatedAt         time.Time `json:"updated_at,omitempty"`
 }
