@@ -224,6 +224,7 @@ func (ch *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 	createby := c.Query("createby")
 
 	collections := []model.Collection{}
+	var count int64
 
 	page, _ := strconv.Atoi(pageQuery)
 	if page <= 0 {
@@ -249,6 +250,7 @@ func (ch *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 	}
 
 	result.Find(&collections)
+	result.Offset(-1).Count(&count)
 
 	if result.Error != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
@@ -259,6 +261,7 @@ func (ch *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"status":  "ok",
 		"results": collections,
+		"total":   count,
 	})
 }
 
