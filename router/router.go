@@ -46,15 +46,23 @@ func SetRouter(app *fiber.App) {
 	reameHomeGroup.Get("/", reameHomeGroupHandler.GetAllHome)
 	reameHomeGroup.Get("/:id", reameHomeGroupHandler.GetHomeById)
 
+	excollection := api.Group("/collection")
 	excollectionHandler := handler.CollectionHandler{
 		DB: database.Database.DB,
 	}
-	excollection := api.Group("/collection")
 	excollection.Get("/lists", excollectionHandler.GetCollections)
 	excollection.Get("/:ref", excollectionHandler.GetCollectionSingleDetail)
 	excollection.Get("/exist", excollectionHandler.GetIsExist)
 	excollection.Post("/create", excollectionHandler.PostCreateNewCollectionDetail)
 	excollection.Put("/update/:id", excollectionHandler.PutUpdateCollectionDetail)
+
+	excollection.Get("/trending/all", excollectionHandler.GetAllTrendingCollection)
+	excollection.Post("/trending/create", excollectionHandler.CreateTrendingCollection)
+	excollection.Put("/trending/update/:id", excollectionHandler.UpdateTrendingCollection)
+
+	excollection.Get("/featured/all", excollectionHandler.GetAllFeaturedCollection)
+	excollection.Post("/featured/create", excollectionHandler.CreateFeaturedCollection)
+	excollection.Put("/featured/update/:id", excollectionHandler.UpdateFeaturedCollection)
 
 	// owner route group
 	ownerHandler := handler.OwnerHandler{

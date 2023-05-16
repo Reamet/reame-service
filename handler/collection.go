@@ -437,9 +437,9 @@ func (ph *CollectionHandler) UpdateFeaturedCollection(c *fiber.Ctx) error {
 }
 
 func (ph *CollectionHandler) GetAllTrendingCollection(c *fiber.Ctx) error {
-	collection := model.TrendingCollection{}
+	collection := []model.TrendingCollection{}
 
-	result := ph.DB.Debug().First(&collection)
+	result := ph.DB.Debug().Order("id DESC").Find(&collection)
 
 	if result.Error != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
@@ -454,10 +454,9 @@ func (ph *CollectionHandler) GetAllTrendingCollection(c *fiber.Ctx) error {
 }
 
 func (ph *CollectionHandler) GetAllFeaturedCollection(c *fiber.Ctx) error {
+	collection := []model.FeaturedCollection{}
 
-	collection := model.FeaturedCollection{}
-
-	result := ph.DB.Debug().First(&collection)
+	result := ph.DB.Debug().Order("id DESC").Find(&collection)
 
 	if result.Error != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
