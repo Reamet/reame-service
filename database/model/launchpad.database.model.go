@@ -11,6 +11,7 @@ type Launchpad struct {
 	ImageBanner      string    `json:"imageBanner"`
 	ImageFeature     string    `json:"imageFeature"`
 	ImageAvatar      string    `json:"imageAvatar"`
+	ImageSlider      string    `json:"imageSlider"`
 	ChainName        string    `json:"chainName"`
 	LaunchpadAddress string    `json:"launchpadAddress"`
 	Hot              *bool     `json:"hot"`

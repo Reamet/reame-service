@@ -1,6 +1,7 @@
 package launchpad
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reame-service/database/model"
@@ -9,35 +10,37 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type UpdatePayload struct {
-	ID               string    `json:"id"`
-	Title            string    `json:"title"`
-	Description      string    `json:"description"`
-	ImageBanner      string    `json:"imageBanner"`
-	ImageFeature     string    `json:"imageFeature"`
-	ImageAvatar      string    `json:"imageAvatar"`
-	ChainName        string    `json:"chainName"`
-	LaunchpadAddress string    `json:"launchpadAddress"`
-	Hot              *bool     `json:"hot"`
-	Slug             string    `json:"slug"`
-	Instragram       string    `json:"instragram"`
-	Twitter          string    `json:"twitter"`
-	Facebook         string    `json:"facebook"`
-	Telegram         string    `json:"telegram"`
-	Discord          string    `json:"discord"`
-	UpdateBy         string    `json:"updateBy"`
-	Active           *bool     `json:"active"`
-	TermAndCondition string    `json:"termAndCondition"`
-	Status           string    `json:"status"`
-	SaleStatus       string    `json:"saleStatus"`
-	SaleType         string    `json:"saleType"`
-	StartDate        time.Time `json:"startDate,omitempty"`
-	EndDate          time.Time `json:"endDate,omitempty"`
-	CreatedAt        time.Time `json:"createdAt,omitempty"`
-	UpdatedAt        time.Time `json:"updatedAt,omitempty"`
+	ID               string               `json:"id"`
+	Title            string               `json:"title"`
+	Description      string               `json:"description"`
+	ImageBanner      string               `json:"imageBanner"`
+	ImageFeature     string               `json:"imageFeature"`
+	ImageAvatar      string               `json:"imageAvatar"`
+	ImageSlider      []PayloadImageSlider `json:"imageSlider"`
+	ChainName        string               `json:"chainName"`
+	LaunchpadAddress string               `json:"launchpadAddress"`
+	Hot              *bool                `json:"hot"`
+	Slug             string               `json:"slug"`
+	Instragram       string               `json:"instragram"`
+	Twitter          string               `json:"twitter"`
+	Facebook         string               `json:"facebook"`
+	Telegram         string               `json:"telegram"`
+	Discord          string               `json:"discord"`
+	UpdateBy         string               `json:"updateBy"`
+	Active           *bool                `json:"active"`
+	TermAndCondition string               `json:"termAndCondition"`
+	Status           string               `json:"status"`
+	SaleStatus       string               `json:"saleStatus"`
+	SaleType         string               `json:"saleType"`
+	StartDate        time.Time            `json:"startDate,omitempty"`
+	EndDate          time.Time            `json:"endDate,omitempty"`
+	CreatedAt        time.Time            `json:"createdAt,omitempty"`
+	UpdatedAt        time.Time            `json:"updatedAt,omitempty"`
 }
 
 func Update(c *fiber.Ctx, db *gorm.DB) error {
@@ -73,12 +76,30 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 		}
 	}
 
+	var imageSliderLocation []map[string]interface{}
+
+	if len(payload.ImageSlider) > 0 {
+		for _, payImage := range payload.ImageSlider {
+			imageSliderOutput, err := upload.AWSUpload(payImage.Image, fmt.Sprintf("/%s/%s/%s", "image-slider", strings.ToLower(payload.ID), uuid.NewString()))
+			if err == nil {
+				obj := map[string]interface{}{
+					"image": imageSliderOutput.Location,
+				}
+
+				imageSliderLocation = append(imageSliderLocation, obj)
+			}
+		}
+	}
+
+	formatImageLocation, _ := json.Marshal(imageSliderLocation)
+
 	launchpad := model.Launchpad{
 		Title:            payload.Title,
 		Description:      payload.Description,
 		ImageBanner:      bannerLocation,
 		ImageFeature:     featureLocation,
 		ImageAvatar:      avatarLocation,
+		ImageSlider:      string(formatImageLocation),
 		ChainName:        payload.ChainName,
 		LaunchpadAddress: payload.LaunchpadAddress,
 		Hot:              payload.Hot,
