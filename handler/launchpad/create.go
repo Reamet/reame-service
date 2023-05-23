@@ -98,6 +98,13 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 
 	formatImageLocation, _ := json.Marshal(imageSliderLocation)
 
+	var checkNull string
+	if string(formatImageLocation) != "null" {
+		checkNull = string(formatImageLocation)
+	} else {
+		checkNull = "[{}]"
+	}
+
 	launchpad := model.Launchpad{
 		ID:               strings.ToLower(payload.ID),
 		Title:            payload.Title,
@@ -105,7 +112,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		ImageBanner:      bannerLocation,
 		ImageFeature:     featureLocation,
 		ImageAvatar:      avatarLocation,
-		ImageSlider:      string(formatImageLocation),
+		ImageSlider:      checkNull,
 		ChainName:        payload.ChainName,
 		LaunchpadAddress: payload.LaunchpadAddress,
 		Hot:              payload.Hot,
