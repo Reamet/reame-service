@@ -99,11 +99,11 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 
 	formatImageLocation, _ := json.Marshal(imageSliderLocation)
 
-	var checkNull string
+	var imageSlider string
 	if string(formatImageLocation) != "null" {
-		checkNull = string(formatImageLocation)
+		imageSlider = string(formatImageLocation)
 	} else {
-		checkNull = "[{}]"
+		imageSlider = "[]"
 	}
 
 	launchpad := model.Launchpad{
@@ -112,7 +112,7 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 		ImageBanner:      bannerLocation,
 		ImageFeature:     featureLocation,
 		ImageAvatar:      avatarLocation,
-		ImageSlider:      checkNull,
+		ImageSlider:      imageSlider,
 		ChainName:        payload.ChainName,
 		LaunchpadAddress: payload.LaunchpadAddress,
 		Hot:              payload.Hot,
