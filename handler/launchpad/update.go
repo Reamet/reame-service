@@ -87,11 +87,24 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 				}
 
 				imageSliderLocation = append(imageSliderLocation, obj)
+			} else {
+					obj := map[string]interface{}{
+						"image":  payImage.Image,
+					}
+
+					imageSliderLocation = append(imageSliderLocation, obj)
 			}
 		}
 	}
 
 	formatImageLocation, _ := json.Marshal(imageSliderLocation)
+
+	var imageSlider string
+	if string(formatImageLocation) != "null" {
+		imageSlider = string(formatImageLocation)
+	} else {
+		imageSlider = "[]"
+	}
 
 	launchpad := model.Launchpad{
 		Title:            payload.Title,
@@ -99,7 +112,7 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 		ImageBanner:      bannerLocation,
 		ImageFeature:     featureLocation,
 		ImageAvatar:      avatarLocation,
-		ImageSlider:      string(formatImageLocation),
+		ImageSlider:      imageSlider,
 		ChainName:        payload.ChainName,
 		LaunchpadAddress: payload.LaunchpadAddress,
 		Hot:              payload.Hot,
