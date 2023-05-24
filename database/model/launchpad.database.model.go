@@ -25,6 +25,7 @@ type Launchpad struct {
 	UpdateBy         string    `json:"updateBy" gorm:"type:varchar(42)"`
 	Active           *bool     `json:"active"`
 	TermAndCondition string    `json:"termAndCondition"`
+	RichText         string    `json:"richText"`
 	Status           string    `json:"status"`
 	SaleStatus       string    `json:"saleStatus"`
 	SaleType         string    `json:"saleType"`

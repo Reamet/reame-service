@@ -41,6 +41,7 @@ type CreatePayload struct {
 	Status           string               `json:"status"`
 	SaleStatus       string               `json:"saleStatus"`
 	SaleType         string               `json:"saleType"`
+	RichText         string               `json:"richText"`
 	ImageSlider      []PayloadImageSlider `json:"imageSlider"`
 	StartDate        time.Time            `json:"startDate,omitempty"`
 	EndDate          time.Time            `json:"endDate,omitempty"`
@@ -129,6 +130,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		SaleType:         payload.SaleType,
 		StartDate:        payload.StartDate,
 		EndDate:          payload.EndDate,
+		RichText:         payload.RichText,
 		CreatedBy:        payload.CreatedBy,
 		CreatedAt:        time.Now(),
 		UpdatedAt:        time.Now(),

@@ -33,6 +33,7 @@ type UpdatePayload struct {
 	Discord          string               `json:"discord"`
 	UpdateBy         string               `json:"updateBy"`
 	Active           *bool                `json:"active"`
+	RichText         string               `json:"richText"`
 	TermAndCondition string               `json:"termAndCondition"`
 	Status           string               `json:"status"`
 	SaleStatus       string               `json:"saleStatus"`
@@ -88,11 +89,11 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 
 				imageSliderLocation = append(imageSliderLocation, obj)
 			} else {
-					obj := map[string]interface{}{
-						"image":  payImage.Image,
-					}
+				obj := map[string]interface{}{
+					"image": payImage.Image,
+				}
 
-					imageSliderLocation = append(imageSliderLocation, obj)
+				imageSliderLocation = append(imageSliderLocation, obj)
 			}
 		}
 	}
@@ -124,6 +125,7 @@ func Update(c *fiber.Ctx, db *gorm.DB) error {
 		Discord:          payload.Discord,
 		Active:           payload.Active,
 		TermAndCondition: payload.TermAndCondition,
+		RichText:         payload.RichText,
 		Status:           payload.Status,
 		SaleStatus:       payload.SaleStatus,
 		SaleType:         payload.SaleType,
