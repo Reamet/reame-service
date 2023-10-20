@@ -23,11 +23,12 @@ func (ph *HomeHandler) Init(db *gorm.DB) {
 }
 
 type CreateHomePayload struct {
-	Title       string `json:"title"`
-	Subtitle    string `json:"subtitle"`
-	ImageBanner string `json:"image_banner"`
-	ButtonTitle string `json:"button_title"`
-	NftIds      string `json:"nft_ids"`
+	Title         string `json:"title"`
+	Subtitle      string `json:"subtitle"`
+	ImageBanner   string `json:"image_banner"`
+	ButtonTitle   string `json:"button_title"`
+	NftIds        string `json:"nft_ids"`
+	LaunchpadSlug string `json:"launchpad_slug"`
 }
 
 func (ph *HomeHandler) Create(c *fiber.Ctx) error {
@@ -53,13 +54,14 @@ func (ph *HomeHandler) Create(c *fiber.Ctx) error {
 	}
 
 	databasePayload := model.Home{
-		Title:       bodyPayload.Title,
-		Subtitle:    bodyPayload.Subtitle,
-		ImageBanner: imageBanner,
-		ButtonTitle: bodyPayload.ButtonTitle,
-		NftIds:      bodyPayload.NftIds,
-		CreatedAt:   currentTime,
-		UpdatedAt:   currentTime,
+		Title:         bodyPayload.Title,
+		Subtitle:      bodyPayload.Subtitle,
+		ImageBanner:   imageBanner,
+		ButtonTitle:   bodyPayload.ButtonTitle,
+		NftIds:        bodyPayload.NftIds,
+		LaunchpadSlug: bodyPayload.LaunchpadSlug,
+		CreatedAt:     currentTime,
+		UpdatedAt:     currentTime,
 	}
 
 	if err := ph.DB.Create(&databasePayload).Error; err != nil {
@@ -103,13 +105,14 @@ func (ph *HomeHandler) Update(c *fiber.Ctx) error {
 	}
 
 	databasePayload := model.Home{
-		Title:       bodyPayload.Title,
-		Subtitle:    bodyPayload.Subtitle,
-		ImageBanner: imageBanner,
-		ButtonTitle: bodyPayload.ButtonTitle,
-		NftIds:      bodyPayload.NftIds,
-		CreatedAt:   currentTime,
-		UpdatedAt:   currentTime,
+		Title:         bodyPayload.Title,
+		Subtitle:      bodyPayload.Subtitle,
+		ImageBanner:   imageBanner,
+		ButtonTitle:   bodyPayload.ButtonTitle,
+		NftIds:        bodyPayload.NftIds,
+		LaunchpadSlug: bodyPayload.LaunchpadSlug,
+		CreatedAt:     currentTime,
+		UpdatedAt:     currentTime,
 	}
 
 	if err := ph.DB.Where("id = ?", id).Updates(&databasePayload).Error; err != nil {
@@ -169,7 +172,7 @@ func (ph *HomeHandler) GetAllHome(c *fiber.Ctx) error {
 	}
 	offset := (page - 1) * pageSize
 
-	result := ph.DB.Limit(pageSize).Offset(offset).Find(&home)
+	result := ph.DB.Preload("Launchpad").Limit(pageSize).Offset(offset).Find(&home)
 	result.Offset(-1).Count(&count)
 
 	if result.Error != nil {
