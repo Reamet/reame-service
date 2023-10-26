@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reame-service/database"
 	"reame-service/handler"
+	featuredlaunchpad "reame-service/handler/featuredLaunchpad"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -84,5 +85,15 @@ func SetRouter(app *fiber.App) {
 	branch.Get("/owner/:ownerId", branchHandler.GetBranchByOwnerId)
 	branch.Post("/", branchHandler.CreateBranch)
 	branch.Put("/:branchId", branchHandler.UpdateBranch)
+
+	/* Featured Launchpad */
+	featuredLaunchpad := api.Group("/featured")
+	featuredLaunchpadHandler := featuredlaunchpad.FeaturedLaunchpadHandler{
+		DB: database.Database.DB,
+	}
+
+	featuredLaunchpad.Get("/launchpad/all", featuredLaunchpadHandler.GetAllFeaturedLaunchpad)
+	featuredLaunchpad.Post("/launchpad/create", featuredLaunchpadHandler.CreateFeaturedLaunchpad)
+	featuredLaunchpad.Put("/launchpad/update/:id", featuredLaunchpadHandler.UpdateFeaturedLaunchpad)
 
 }
