@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"os"
+	"reame-service/database/model"
 	"strconv"
 
 	"gorm.io/driver/postgres"
@@ -58,11 +59,11 @@ func (dh *DatabaseHandler) InitialPostgresql() {
 }
 
 func (dh *DatabaseHandler) InitialMigration() {
-	// dh.DB.AutoMigrate(&model.Collection{})
-	// dh.DB.AutoMigrate(&model.Mint{})
-	// dh.DB.AutoMigrate(&model.Launchpad{})
-	// dh.DB.AutoMigrate(&model.Home{})
-	// dh.DB.AutoMigrate(&model.TrendingCollection{})
-	// dh.DB.AutoMigrate(&model.FeaturedCollection{}, &model.Branch{}, &model.Owner{})
-	// dh.DB.AutoMigrate(&model.FeaturedLaunchpad{})
+	dh.DB.AutoMigrate(&model.Collection{})
+	dh.DB.AutoMigrate(&model.Mint{})
+	dh.DB.AutoMigrate(&model.Launchpad{})
+	dh.DB.AutoMigrate(&model.Home{})
+	dh.DB.AutoMigrate(&model.TrendingCollection{})
+	dh.DB.AutoMigrate(&model.FeaturedCollection{}, &model.Branch{}, &model.Owner{})
+	dh.DB.AutoMigrate(&model.FeaturedLaunchpad{})
 }
