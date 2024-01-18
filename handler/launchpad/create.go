@@ -1,6 +1,7 @@
 package launchpad
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"reame-service/database/model"
@@ -9,36 +10,43 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
+type PayloadImageSlider struct {
+	Image string `json:"image"`
+}
+
 type CreatePayload struct {
-	ID               string    `json:"id"`
-	Title            string    `json:"title"`
-	Description      string    `json:"description"`
-	ImageBanner      string    `json:"imageBanner"`
-	ImageFeature     string    `json:"imageFeature"`
-	ImageAvatar      string    `json:"imageAvatar"`
-	ChainName        string    `json:"chainName"`
-	LaunchpadAddress string    `json:"launchpadAddress"`
-	Hot              *bool     `json:"hot"`
-	Slug             string    `json:"slug"`
-	Instragram       string    `json:"instragram"`
-	Twitter          string    `json:"twitter"`
-	Facebook         string    `json:"facebook"`
-	Telegram         string    `json:"telegram"`
-	Discord          string    `json:"discord"`
-	CreatedBy        string    `json:"createdBy"`
-	UpdateBy         string    `json:"updateBy"`
-	Active           *bool     `json:"active"`
-	TermAndCondition string    `json:"termAndCondition"`
-	Status           string    `json:"status"`
-	SaleStatus       string    `json:"saleStatus"`
-	SaleType         string    `json:"saleType"`
-	StartDate        time.Time `json:"startDate,omitempty"`
-	EndDate          time.Time `json:"endDate,omitempty"`
-	CreatedAt        time.Time `json:"createdAt,omitempty"`
-	UpdatedAt        time.Time `json:"updatedAt,omitempty"`
+	ID               string               `json:"id"`
+	Title            string               `json:"title"`
+	Description      string               `json:"description"`
+	ImageBanner      string               `json:"imageBanner"`
+	ImageFeature     string               `json:"imageFeature"`
+	ImageAvatar      string               `json:"imageAvatar"`
+	ChainName        string               `json:"chainName"`
+	LaunchpadAddress string               `json:"launchpadAddress"`
+	Hot              *bool                `json:"hot"`
+	Slug             string               `json:"slug"`
+	Instragram       string               `json:"instragram"`
+	Twitter          string               `json:"twitter"`
+	Facebook         string               `json:"facebook"`
+	Telegram         string               `json:"telegram"`
+	Discord          string               `json:"discord"`
+	CreatedBy        string               `json:"createdBy"`
+	UpdateBy         string               `json:"updateBy"`
+	Active           *bool                `json:"active"`
+	TermAndCondition string               `json:"termAndCondition"`
+	Status           string               `json:"status"`
+	SaleStatus       string               `json:"saleStatus"`
+	SaleType         string               `json:"saleType"`
+	RichText         string               `json:"richText"`
+	ImageSlider      []PayloadImageSlider `json:"imageSlider"`
+	StartDate        time.Time            `json:"startDate,omitempty"`
+	EndDate          time.Time            `json:"endDate,omitempty"`
+	CreatedAt        time.Time            `json:"createdAt,omitempty"`
+	UpdatedAt        time.Time            `json:"updatedAt,omitempty"`
 }
 
 func Create(c *fiber.Ctx, db *gorm.DB) error {
@@ -74,6 +82,30 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		}
 	}
 
+	var imageSliderLocation []map[string]interface{}
+
+	if len(payload.ImageSlider) > 0 {
+		for _, payImage := range payload.ImageSlider {
+			imageSliderOutput, err := upload.AWSUpload(payImage.Image, fmt.Sprintf("/%s/%s/%s", "image-slider", strings.ToLower(payload.ID), uuid.NewString()))
+			if err == nil {
+				obj := map[string]interface{}{
+					"image": imageSliderOutput.Location,
+				}
+
+				imageSliderLocation = append(imageSliderLocation, obj)
+			}
+		}
+	}
+
+	formatImageLocation, _ := json.Marshal(imageSliderLocation)
+
+	var imageSlider string
+	if string(formatImageLocation) != "null" {
+		imageSlider = string(formatImageLocation)
+	} else {
+		imageSlider = "[]"
+	}
+
 	launchpad := model.Launchpad{
 		ID:               strings.ToLower(payload.ID),
 		Title:            payload.Title,
@@ -81,6 +113,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		ImageBanner:      bannerLocation,
 		ImageFeature:     featureLocation,
 		ImageAvatar:      avatarLocation,
+		ImageSlider:      imageSlider,
 		ChainName:        payload.ChainName,
 		LaunchpadAddress: payload.LaunchpadAddress,
 		Hot:              payload.Hot,
@@ -97,6 +130,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		SaleType:         payload.SaleType,
 		StartDate:        payload.StartDate,
 		EndDate:          payload.EndDate,
+		RichText:         payload.RichText,
 		CreatedBy:        payload.CreatedBy,
 		CreatedAt:        time.Now(),
 		UpdatedAt:        time.Now(),
