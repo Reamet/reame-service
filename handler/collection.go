@@ -32,6 +32,7 @@ type PayloadData struct {
 	OwnerId           int    `json:"owner_id"`
 	BranchId          int    `json:"branch_id"`
 	Instragram        string `json:"instragram"`
+	Medium			  string `json:"medium"`
 	Facebook          string `json:"facebook"`
 	Active            string `json:"active"`
 	Telegram          string `json:"telegram"`
