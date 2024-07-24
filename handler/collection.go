@@ -11,12 +11,15 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/sirupsen/logrus"
 
 	"gorm.io/gorm"
 )
 
 type CollectionHandler struct {
 	DB *gorm.DB
+	Log *logrus.Logger
+
 }
 
 type PayloadData struct {
@@ -48,6 +51,8 @@ type PayloadData struct {
 
 func (ph *CollectionHandler) Init(db *gorm.DB) {
 	ph.DB = db
+	ph.Log = logrus.New() // Initialize the logger
+	ph.Log.SetFormatter(&logrus.JSONFormatter{}) // Optional: Set log format
 }
 
 func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
@@ -124,6 +129,14 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 
 func (ph *CollectionHandler) PutUpdateCollectionDetail(c *fiber.Ctx) error {
 	payload := PayloadData{}
+
+
+		// Log the incoming request
+	ph.Log.WithFields(logrus.Fields{
+		"method": "PostCreateNewCollectionDetail",
+		"payload": payload,
+	}).Info("Received request to create new collection detail")
+	
 	id := c.Params("id")
 
 	if err := c.BodyParser(&payload); err != nil {
