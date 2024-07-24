@@ -30,6 +30,7 @@ type CreatePayload struct {
 	Hot              *bool                `json:"hot"`
 	Slug             string               `json:"slug"`
 	Instragram       string               `json:"instragram"`
+	Medium			 string    			  `json:"medium"`
 	Twitter          string               `json:"twitter"`
 	Facebook         string               `json:"facebook"`
 	Telegram         string               `json:"telegram"`
