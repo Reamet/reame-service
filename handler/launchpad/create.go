@@ -121,6 +121,7 @@ func Create(c *fiber.Ctx, db *gorm.DB) error {
 		Slug:             strings.ToLower(payload.Slug),
 		Facebook:         payload.Facebook,
 		Instragram:       payload.Instragram,
+		Medium:           payload.Medium,
 		Telegram:         payload.Telegram,
 		Twitter:          payload.Twitter,
 		Discord:          payload.Discord,
