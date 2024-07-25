@@ -14,11 +14,12 @@ type Collection struct {
 	ImageAvatar       string    `json:"image_avatar"`
 	TokenType         *string   `json:"token_type"`
 	Hot               *bool     `json:"hot"`
+	IsDisplay         bool      `json:"is_display" gorm:"default:true"`
 	OwnerId           *int      `json:"owner_id"`
 	BranchId          *int      `json:"branch_id"`
 	Slug              string    `json:"slug" gorm:"unique;type:varchar(255)"`
 	Instragram        string    `json:"instragram" gorm:"type:varchar(255)"`
-	Medium			  string    `json:"medium" gorm:"type:varchar(255)"`
+	Medium            string    `json:"medium" gorm:"type:varchar(255)"`
 	Website           string    `json:"website" gorm:"type:varchar(255)"`
 	Twitter           string    `json:"twitter" gorm:"type:varchar(255)"`
 	Facebook          string    `json:"facebook" gorm:"type:varchar(255)"`

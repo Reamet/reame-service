@@ -19,7 +19,6 @@ import (
 
 type CollectionHandler struct {
 	DB *gorm.DB
-
 }
 
 type PayloadData struct {
@@ -35,7 +34,7 @@ type PayloadData struct {
 	OwnerId           int    `json:"owner_id"`
 	BranchId          int    `json:"branch_id"`
 	Instragram        string `json:"instragram"`
-	Medium			  string `json:"medium"`
+	Medium            string `json:"medium"`
 	Facebook          string `json:"facebook"`
 	Active            string `json:"active"`
 	Telegram          string `json:"telegram"`
@@ -49,6 +48,10 @@ type PayloadData struct {
 	CreatedBy         string `json:"created_by"`
 }
 
+type PatchToggleDisplayPayload struct {
+	IsDisplay *bool `json:"isDisplay"`
+}
+
 func (ph *CollectionHandler) Init(db *gorm.DB) {
 	ph.DB = db
 }
@@ -57,16 +60,14 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 	payload := PayloadData{}
 
 	// Log the incoming request
-    // Marshal the struct to JSON
-    jsonData, err := json.Marshal(payload)
-    if err != nil {
-        log.Fatalf("Error marshaling JSON: %v", err)
-    }
+	// Marshal the struct to JSON
+	jsonData, err := json.Marshal(payload)
+	if err != nil {
+		log.Fatalf("Error marshaling JSON: %v", err)
+	}
 
-    // Log the JSON string
-    log.Printf("PayloadData: %s", jsonData)
-
-	
+	// Log the JSON string
+	log.Printf("PayloadData: %s", jsonData)
 
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -140,7 +141,6 @@ func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 func (ph *CollectionHandler) PutUpdateCollectionDetail(c *fiber.Ctx) error {
 	payload := PayloadData{}
 
-	
 	id := c.Params("id")
 
 	if err := c.BodyParser(&payload); err != nil {
@@ -209,6 +209,35 @@ func (ph *CollectionHandler) PutUpdateCollectionDetail(c *fiber.Ctx) error {
 	})
 }
 
+func (ph *CollectionHandler) PatchUpdateToggleDisplay(c *fiber.Ctx) error {
+	patchPayload := PatchToggleDisplayPayload{}
+
+	id := c.Params("id")
+
+	if err := c.BodyParser(&patchPayload); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	if patchPayload.IsDisplay == nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "IsDisplay field is required",
+		})
+	}
+
+	err := ph.DB.Model(&model.Collection{}).Where("ID = ?", strings.ToLower(id)).Update("is_display", *patchPayload.IsDisplay).Error
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": "ok",
+	})
+}
+
 func (ph *CollectionHandler) GetIsExist(c *fiber.Ctx) error {
 	collection := model.Collection{}
 	ref := c.Params("ref")
@@ -241,6 +270,7 @@ func (ch *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 	pageQuery := c.Query("page", "1")
 	pageSizeQuery := c.Query("page_size", "10")
 	active := c.Query("active")
+	isDisplay := c.Query("isDisplay")
 	createby := c.Query("createby")
 
 	collections := []model.Collection{}
@@ -267,6 +297,15 @@ func (ch *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 	}
 	if len(createby) > 0 {
 		result.Where("created_by = ?", createby)
+	}
+	if len(isDisplay) > 0 {
+		isDisplay, err := strconv.ParseBool(isDisplay)
+		if err != nil {
+			return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+				"message": "Invalid is_display value",
+			})
+		}
+		result.Where("is_display = ?", isDisplay)
 	}
 
 	result.Find(&collections)
