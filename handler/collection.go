@@ -1,9 +1,7 @@
 package handler
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"reame-service/database/model"
 	"reame-service/handler/upload"
@@ -58,16 +56,6 @@ func (ph *CollectionHandler) Init(db *gorm.DB) {
 
 func (ph *CollectionHandler) PostCreateNewCollectionDetail(c *fiber.Ctx) error {
 	payload := PayloadData{}
-
-	// Log the incoming request
-	// Marshal the struct to JSON
-	jsonData, err := json.Marshal(payload)
-	if err != nil {
-		log.Fatalf("Error marshaling JSON: %v", err)
-	}
-
-	// Log the JSON string
-	log.Printf("PayloadData: %s", jsonData)
 
 	if err := c.BodyParser(&payload); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
