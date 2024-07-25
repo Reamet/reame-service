@@ -56,6 +56,7 @@ func SetRouter(app *fiber.App) {
 	excollection.Get("/exist", excollectionHandler.GetIsExist)
 	excollection.Post("/create", excollectionHandler.PostCreateNewCollectionDetail)
 	excollection.Put("/update/:id", excollectionHandler.PutUpdateCollectionDetail)
+	excollection.Patch("/:id/toggle-display", excollectionHandler.PatchUpdateToggleDisplay)
 
 	excollection.Get("/trending/all", excollectionHandler.GetAllTrendingCollection)
 	excollection.Post("/trending/create", excollectionHandler.CreateTrendingCollection)
