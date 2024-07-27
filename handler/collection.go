@@ -46,6 +46,14 @@ type PayloadData struct {
 	CreatedBy         string `json:"created_by"`
 }
 
+type AddressRequest struct {
+	Addresses []string `json:"addresses"`
+}
+
+type DisplayableAddressResponse struct {
+	Addresses []string `json:"addresses"`
+}
+
 type PatchToggleDisplayPayload struct {
 	IsDisplay *bool `json:"isDisplay"`
 }
@@ -515,4 +523,33 @@ func (ph *CollectionHandler) GetAllFeaturedCollection(c *fiber.Ctx) error {
 		"status": "ok",
 		"result": collection,
 	})
+}
+
+func (ch *CollectionHandler) GetDisplayableAddresses(c *fiber.Ctx) error {
+	var request AddressRequest
+
+	if err := c.BodyParser(&request); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid request body",
+		})
+	}
+
+	collections := []model.Collection{}
+	err := ch.DB.Where("collection_id_chain IN ? AND is_display = ?", request.Addresses, true).Find(&collections).Error
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	displayableAddresses := make([]string, len(collections))
+	for i, collection := range collections {
+		displayableAddresses[i] = *collection.CollectionIdChain
+	}
+
+	response := DisplayableAddressResponse{
+		Addresses: displayableAddresses,
+	}
+
+	return c.JSON(response)
 }
