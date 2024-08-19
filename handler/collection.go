@@ -553,3 +553,34 @@ func (ch *CollectionHandler) GetDisplayableAddresses(c *fiber.Ctx) error {
 
 	return c.JSON(response)
 }
+
+func (ph *CollectionHandler) DeleteCollectionById(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	collection := model.Collection{}
+
+	result := ph.DB.Debug().Where("ID = ?", strings.ToLower(id)).First(&collection)
+
+	if result.Error != nil {
+		if result.Error == gorm.ErrRecordNotFound {
+			return c.Status(http.StatusNotFound).JSON(fiber.Map{
+				"message": "Collection not found",
+			})
+		}
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": result.Error.Error(),
+		})
+	}
+
+	deleteResult := ph.DB.Delete(&collection)
+	if deleteResult.Error != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"message": deleteResult.Error.Error(),
+		})
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":  "ok",
+		"message": "Collection deleted successfully",
+	})
+}
